@@ -91,7 +91,6 @@
 				4EB17CCAC64687F598FCF9B4 /* Pods-Photure-PhotureTests.debug.xcconfig */,
 				A0EED8FF7B30B7F1CFE56CF3 /* Pods-Photure-PhotureTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -449,6 +448,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2LA736763H;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Photure/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -475,6 +475,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2LA736763H;
 				INFOPLIST_FILE = Photure/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

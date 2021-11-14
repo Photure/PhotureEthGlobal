@@ -25,6 +25,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { withWalletConnect, useWalletConnect } from '@walletconnect/react-native-dapp';
+import WalletConnectOptions from './constants/WalletConnectOptions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -54,7 +57,7 @@ const Section = ({children, title}): Node => {
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const wc = useWalletConnect()
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -70,19 +73,23 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+            <TouchableOpacity onPress={()=> wc.connect({chainId: 137})}>
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.js</Text> to change this
             screen and then come back to see your edits.
           </Section>
+          </TouchableOpacity>
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
           <Section title="Debug">
             <DebugInstructions />
           </Section>
+          <TouchableOpacity onPress={() => console.log(wc)}>
           <Section title="Learn More">
             Read the docs to discover what to do next:
           </Section>
+          </TouchableOpacity>
           <LearnMoreLinks />
         </View>
       </ScrollView>
@@ -109,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default withWalletConnect(App, WalletConnectOptions);

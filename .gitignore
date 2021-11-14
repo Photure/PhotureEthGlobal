@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+.env
 
 # Android/IntelliJ
 #
@@ -35,6 +36,7 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+artifacts/@openzeppelin/contracts
 
 # BUCK
 buck-out/
