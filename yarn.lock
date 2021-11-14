@@ -695,7 +695,7 @@
     "@babel/helper-validator-option" "^7.14.5"
     "@babel/plugin-transform-flow-strip-types" "^7.16.0"
 
-"@babel/preset-typescript@^7.1.0":
+"@babel/preset-typescript@^7.1.0", "@babel/preset-typescript@^7.16.0":
   version "7.16.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.16.0.tgz#b0b4f105b855fb3d631ec036cdc9d1ffd1fa5eac"
   integrity sha512-txegdrZYgO9DlPbv+9QOVpMnKbOtezsLHWsnsRF4AjbSIsVaujrq1qg8HK0mxQpWv0jnejt0yEoW1uWpvbrDTg==
@@ -2218,14 +2218,6 @@
     nanoid "^3.1.15"
     query-string "^6.13.6"
     react-is "^16.13.0"
-
-"@react-navigation/material-top-tabs@^6.0.6":
-  version "6.0.6"
-  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.0.6.tgz#efabd409e970c76cac4b9c61ac4d9bf735cf6d39"
-  integrity sha512-kbm/0jndRVeGdAgOd4NcDSdSQiYeA7fkctCKbPxe3mT36j9qOqpfHfmd2dbv/VbNCngdTtZ3/+QMxTIViZGy7g==
-  dependencies:
-    color "^3.1.3"
-    warn-once "^0.1.0"
 
 "@react-navigation/native@^5.9.0", "@react-navigation/native@^5.9.8":
   version "5.9.8"
@@ -12359,12 +12351,7 @@ react-native-shared-element@^0.8.3:
   resolved "https://registry.yarnpkg.com/react-native-shared-element/-/react-native-shared-element-0.8.3.tgz#c49b6acdca9e5ac27acc73ec7e7ddbaa7af35248"
   integrity sha512-mbL0gWBaZgWc5YQUwwlzyUOToMbfE+QdNxlSK8MdRGX6ItssVH+JLbq8ilLRTNEO+cTFFosXdQwqBUAC4IPSww==
 
-react-native-svg@9.6.4:
-  version "9.6.4"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.6.4.tgz#f9ceb228efd07317a5f9c378c6b9c5e13ff50cd0"
-  integrity sha512-6SlbGx0vlXHyDPQXSpX+8o6bNjxKFNJsISoboAkR7YWW6hdnkMg/HJXCgT6oJC0/ClKtSO7ZPrQcK4HR65kDNg==
-
-react-native-svg@^12.1.1:
+react-native-svg@12.1.1, react-native-svg@9.6.4, react-native-svg@^12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.1.tgz#5f292410b8bcc07bbc52b2da7ceb22caf5bcaaee"
   integrity sha512-NIAJ8jCnXGCqGWXkkJ1GTzO4a3Md5at5sagYV8Vh4MXYnL4z5Rh428Wahjhh+LIjx40EE5xM5YtwyJBqOIba2Q==
@@ -13444,9 +13431,9 @@ spdx-expression-parse@^3.0.0:
     spdx-license-ids "^3.0.0"
 
 spdx-license-ids@^3.0.0:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.10.tgz#0d9becccde7003d6c658d487dd48a32f0bf3014b"
-  integrity sha512-oie3/+gKf7QtpitB0LYLETe+k8SifzsX4KixvpOsbI6S0kRiRQ5MKOio8eMSAKQ17N06+wdEOXRiId+zOxo0hA==
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.11.tgz#50c0d8c40a14ec1bf449bae69a0ea4685a9d9f95"
+  integrity sha512-Ctl2BrFiM0X3MANYgj3CkygxhRmr9mi6xhejbdO960nF6EDJApTYpn0BQnDKlnNBULKiCN1n3w9EBkHK8ZWg+g==
 
 split-on-first@^1.0.0:
   version "1.1.0"

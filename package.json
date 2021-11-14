@@ -11,8 +11,9 @@
     "postinstall": "rn-nodeify --install fs,dgram,process,path,console,stream,crypto,os,http,https --hack && rm -rf node_modules/@walletconnect/react-native-dapp/node_modules/react-native-svg"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.3.2",
+    "@babel/preset-typescript": "^7.16.0",
     "@motify/interactions": "^0.16.1",
+    "@openzeppelin/contracts": "^4.3.2",
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-navigation/native": "^5.9.8",
     "@react-navigation/stack": "^5.14.9",
@@ -141,5 +142,8 @@
     "tty": "tty-browserify",
     "vm": "vm-browserify",
     "tls": false
+  },
+  "resolutions": {
+    "react-native-svg": "12.1.1"
   }
 }
