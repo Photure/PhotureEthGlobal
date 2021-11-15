@@ -45,7 +45,7 @@ const ItemDetails = ({navigation, route}) => {
   const goBack = () => {
     if (!hasBeenCalled) {
       StatusBar.setHidden(false, 'slide');
-      navigation.goBack();
+      navigation.pop();
       hasBeenCalled = true;
     }
   };

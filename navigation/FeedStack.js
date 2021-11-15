@@ -21,6 +21,7 @@ export const FeedStack = () => (
           headerShown: false,
           presentation: 'modal',
           gestureEnabled: false,
+          animationTypeForReplace: 'pop',
           ...TransitionPresets.ModalSlideFromBottomIOS,
         };
       }}
@@ -29,7 +30,7 @@ export const FeedStack = () => (
         return [
           {
             id: `item.${item.id}.photo`,
-            animation: 'move',
+            animation: 'fade',
             resize: 'auto',
           },
           {
@@ -39,17 +40,17 @@ export const FeedStack = () => (
           },
           {
             id: `item.${item.id}.tag`,
-            animation: 'move',
+            animation: 'fade',
             resize: 'scale',
           },
           {
             id: `item.${item.id}.like`,
-            animation: 'move',
+            animation: 'fade',
             resize: 'scale',
           },
           {
             id: `item.${item.id}.edit`,
-            animation: 'move',
+            animation: 'fade',
             resize: 'scale',
           },
           {
