@@ -1,13 +1,11 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Dimensions, Animated as RNAnimate, Image} from 'react-native';
 import {Box} from 'native-base';
 import {SharedElement} from 'react-navigation-shared-element';
-import {MotiPressable} from '@motify/interactions';
 
 import CardButton from './CardButton/CardButton';
 import Label from './Label/Label';
 import CardInfo from './CardInfo/CardInfo';
-import {MotiView} from '@motify/components';
 const {height: wHeight} = Dimensions.get('window');
 
 import Animated, {

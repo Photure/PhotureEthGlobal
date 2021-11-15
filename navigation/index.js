@@ -20,7 +20,13 @@ export default function Navigation() {
 
   const setTabBarVisibility = route => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'ItemDetails' || routeName === 'ItemDetailsOne') {
+
+    if (
+      routeName === 'ItemDetails' ||
+      routeName === 'ProfileItems' ||
+      routeName === 'ProfileItemsOne' ||
+      routeName === 'ItemDetailsOne'
+    ) {
       return false;
     }
     return true;
@@ -54,13 +60,6 @@ export default function Navigation() {
         }}
         initialRouteName={'FeedStack'}>
         <TabNavigator.Screen
-          name={'CameraStack'}
-          component={CameraStack}
-          options={{
-            tabBarIcon: ({focused, color, size}) => <Art color={color} />,
-          }}
-        />
-        <TabNavigator.Screen
           name={'FeedStack'}
           component={FeedStack}
           options={({route}) => ({
@@ -69,13 +68,21 @@ export default function Navigation() {
           })}
         />
         <TabNavigator.Screen
+          name={'CameraStack'}
+          component={CameraStack}
+          options={{
+            tabBarIcon: ({focused, color, size}) => <Art color={color} />,
+          }}
+        />
+        <TabNavigator.Screen
           name={'ProfileStack'}
           component={ProfileStack}
-          options={{
+          options={({route}) => ({
+            tabBarVisible: setTabBarVisibility(route),
             tabBarIcon: ({focused, color, size}) => (
               <ProfileIcon color={color} />
             ),
-          }}
+          })}
         />
       </TabNavigator.Navigator>
     </NavigationContainer>

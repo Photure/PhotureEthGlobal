@@ -130,7 +130,6 @@ const ScreenCard = ({
 
   const eventHandler = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
-      console.log(`item.${id}.photo`);
       pressed.value = true;
     },
     onEnd: (event, ctx) => {

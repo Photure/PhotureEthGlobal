@@ -19,28 +19,131 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 
-import LottieView from 'lottie-react-native';
+import Carousel from 'react-native-snap-carousel';
+
 import {Edit} from '../../icons/Edit';
+import {HeartOutline} from '../../icons/HeartOutline';
+import {HeartFilled} from '../../icons/HeartFilled';
 
 import {
   PanGestureHandler,
   NativeViewGestureHandler,
-  ScrollView,
 } from 'react-native-gesture-handler';
 
 import {SharedElement} from 'react-navigation-shared-element';
 import ScreenCard from '../../components/Card/ScreenCard';
+
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
+
+const USER_WALLET_ADDRESS = '0xccf3e94792cd0b3484f54e6110ae1b3445a67cc4';
+
+const data = [
+  {
+    id: '81',
+    title: 'Tree Walk',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Nature',
+    imageLink:
+      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
+  },
+  {
+    id: '82',
+    title: 'Square Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
+  },
+  {
+    id: '83',
+    title: 'Whats up?',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Sky',
+    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
+  },
+  {
+    id: '84',
+    title: 'Petal to the City',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Statue',
+    imageLink:
+      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
+  },
+  {
+    id: '85',
+    title: 'My Christmas Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
+  },
+  {
+    id: '86',
+    title: 'River Trip',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Water',
+    imageLink:
+      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+  },
+  {
+    id: '87',
+    title: 'Mountain Trail',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fall',
+    imageLink:
+      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
+  },
+  {
+    id: '88',
+    title: 'Fire in the Field',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fire',
+    imageLink:
+      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
+  },
+  {
+    id: '89',
+    title: 'Port of Pier',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'City',
+    imageLink:
+      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
+  },
+  {
+    id: '90',
+    title: 'Cold River',
+    walletAddress: 'Paula Green',
+    date: '15th June 2021',
+    tag: 'Winter',
+    imageLink:
+      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
+  },
+];
 
 const ItemDetails = ({navigation, route}) => {
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
 
   const {item} = route.params;
+  const name = route.name;
+
+  const isYourNFT = USER_WALLET_ADDRESS === item.walletAddress;
 
   const {width, height} = useWindowDimensions('window');
   const isGestureActive = useSharedValue(false);
 
   const scale = useSharedValue(1);
+
+  const hasParent = true;
 
   const goBack = () => {
     if (!hasBeenCalled) {
@@ -183,8 +286,8 @@ const ItemDetails = ({navigation, route}) => {
     scrollY.value = event.nativeEvent.contentOffset.y;
   };
 
-  const ref = useRef(null);
-  const [pressed, setPressed] = React.useState(false);
+  const [likePressed, setLikePressed] = React.useState(false);
+
   return (
     <Box
       flex={1}
@@ -246,25 +349,27 @@ const ItemDetails = ({navigation, route}) => {
                       opacity: 0.8,
                     }}>
                     <Stack space={1} shadow={2}>
-                      <HStack space={1} size="sm" alignItems="center">
-                        <SharedElement id={`item.${item.id}.avatar`}>
-                          <Avatar
-                            size="sm"
-                            source={require('../../avatar.png')}
-                            style={{opacity: 1}}
-                          />
-                        </SharedElement>
-                        <Text
-                          fontSize="sm"
-                          _light={{
-                            c: 'gray.500',
-                          }}
-                          _dark={{
-                            c: 'gray.700',
-                          }}>
-                          {item.walletAddress}
-                        </Text>
-                      </HStack>
+                      {!isYourNFT && (
+                        <HStack space={1} size="sm" alignItems="center">
+                          <SharedElement id={`item.${item.id}.avatar`}>
+                            <Avatar
+                              size="sm"
+                              source={require('../../avatar.png')}
+                              style={{opacity: 1}}
+                            />
+                          </SharedElement>
+                          <Text
+                            fontSize="sm"
+                            _light={{
+                              c: 'gray.500',
+                            }}
+                            _dark={{
+                              c: 'gray.700',
+                            }}>
+                            {item.walletAddress}
+                          </Text>
+                        </HStack>
+                      )}
                       <Text
                         fontSize="xl"
                         _light={{
@@ -348,12 +453,14 @@ const ItemDetails = ({navigation, route}) => {
                   <SharedElement id={`item.${item.id}.like`}>
                     <Pressable
                       onPress={() => {
-                        if (pressed) {
-                          ref.current.play(0, 35);
-                          setPressed(false);
+                        if (item.type === 'edit') {
+                          console.log('Open Editor');
                         } else {
-                          ref.current.play(35, 75);
-                          setPressed(true);
+                          if (likePressed) {
+                            setLikePressed(false);
+                          } else {
+                            setLikePressed(true);
+                          }
                         }
                       }}>
                       <Stack
@@ -366,12 +473,17 @@ const ItemDetails = ({navigation, route}) => {
                           bg: 'gray.700:alpha.80',
                         }}>
                         <HStack space={2} px="2" alignItems="center">
-                          <LottieView
-                            ref={ref}
-                            source={require('./heart.json')}
-                            loop={false}
-                            style={{width: 24, height: 24}}
-                          />
+                          {likePressed ? (
+                            <HeartFilled
+                              fivehundred={fivehundred}
+                              onehundred={onehundred}
+                            />
+                          ) : (
+                            <HeartOutline
+                              fivehundred={fivehundred}
+                              onehundred={onehundred}
+                            />
+                          )}
                           <Text
                             _light={{
                               color: 'black',
@@ -404,127 +516,165 @@ const ItemDetails = ({navigation, route}) => {
                   textAlign={'center'}
                   mx={6}
                   marginTop={6}
+                  _light={{
+                    color: 'gray.800',
+                  }}
+                  _dark={{
+                    color: 'gray.200',
+                  }}
                   marginBottom={10}
                   fontWeight="normal">
                   Edit of a lovely rose that inspired me and wanted to share
                   with you
                 </Heading>
-                {item.id === '1' ? (
+
+                {hasParent && (
                   <Stack mx={6}>
+                    <Heading fontWeight="500" size="md">
+                      Inspiration
+                    </Heading>
                     <ScreenCard
-                      id="200"
-                      title="Cold River"
+                      id="100"
+                      title="River Trip"
                       walletAddress="Paula Green"
                       date="15th June 2021"
-                      tag="Winter"
-                      imageLink="https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg"
-                      onPress={() => {
-                        if (route.name === 'ItemDetails') {
-                          navigation.push('ItemDetailsOne', {
-                            item: {
-                              id: '200',
-                              title: 'Cold River',
-                              walletAddress: 'Paula Green',
-                              date: '15th June 2021',
-                              tag: 'Winter',
-                              imageLink:
-                                'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
-                            },
-                          });
-                        } else {
-                          navigation.push('ItemDetails', {
-                            item: {
-                              id: '200',
-                              title: 'Cold River',
-                              walletAddress: 'Paula Green',
-                              date: '15th June 2021',
-                              tag: 'Winter',
-                              imageLink:
-                                'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
-                            },
-                          });
-                        }
-                      }}
-                    />
-                  </Stack>
-                ) : item.id === '200' ? (
-                  <Stack mx={6}>
-                    <ScreenCard
-                      id="300"
-                      title="River Trip"
-                      walletAddress="0xccf3...7cC4"
-                      date="0.4 MATIC"
                       tag="Water"
                       imageLink="https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg"
                       onPress={() => {
-                        if (route.name === 'ItemDetails') {
-                          navigation.push('ItemDetailsOne', {
-                            item: {
-                              id: '300',
-                              title: 'River Trip',
-                              walletAddress: '0xccf3...7cC4',
-                              date: '0.4 MATIC',
-                              tag: 'Water',
-                              imageLink:
-                                'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                            },
-                          });
+                        if (name.includes('ItemDetails')) {
+                          if (route.name === 'ItemDetailsOne') {
+                            navigation.push('ItemDetails', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          } else {
+                            navigation.push('ItemDetailsOne', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          }
                         } else {
-                          navigation.push('ItemDetails', {
-                            item: {
-                              id: '300',
-                              title: 'River Trip',
-                              walletAddress: '0xccf3...7cC4',
-                              date: '0.4 MATIC',
-                              tag: 'Water',
-                              imageLink:
-                                'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                            },
-                          });
-                        }
-                      }}
-                    />
-                  </Stack>
-                ) : (
-                  <Stack mx={6}>
-                    <ScreenCard
-                      id="400"
-                      title="Port of Pier"
-                      walletAddress="0xccf3...7cC4"
-                      date="0.4 MATIC"
-                      tag="City"
-                      imageLink="https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg"
-                      onPress={() => {
-                        if (route.name === 'ItemDetails') {
-                          navigation.push('ItemDetailsOne', {
-                            item: {
-                              id: '400',
-                              title: 'Port of Pier',
-                              walletAddress: '0xccf3...7cC4',
-                              date: '0.4 MATIC',
-                              tag: 'City',
-                              imageLink:
-                                'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
-                            },
-                          });
-                        } else {
-                          navigation.push('ItemDetails', {
-                            item: {
-                              id: '400',
-                              title: 'Port of Pier',
-                              walletAddress: '0xccf3...7cC4',
-                              date: '0.4 MATIC',
-                              tag: 'City',
-                              imageLink:
-                                'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
-                            },
-                          });
+                          if (route.name === 'ProfileItems') {
+                            navigation.push('ProfileItems', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          } else {
+                            navigation.push('ProfileItemsOne', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          }
                         }
                       }}
                     />
                   </Stack>
                 )}
-                <Box my={40} />
+                <Stack mx={6} my={2}>
+                  <Heading fontWeight="500" size="md">
+                    Inspired
+                  </Heading>
+                </Stack>
+                <Carousel
+                  data={data}
+                  useExperimentalSnap
+                  firstItem={1}
+                  renderItem={({item: ListItem, index, dataIndex}) => (
+                    <ProfileCard
+                      {...ListItem}
+                      index={dataIndex}
+                      containerWidth={width / 2}
+                      isFromDetails
+                      onPress={() => {
+                        if (name.includes('ItemDetails')) {
+                          if (route.name === 'ItemDetailsOne') {
+                            navigation.push('ItemDetails', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          } else {
+                            navigation.push('ItemDetailsOne', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          }
+                        } else {
+                          if (route.name === 'ProfileItems') {
+                            navigation.push('ProfileItems', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          } else {
+                            navigation.push('ProfileItemsOne', {
+                              item: {
+                                id: '100',
+                                title: 'River Trip',
+                                walletAddress: '0xccf3...7cC4',
+                                date: '0.4 MATIC',
+                                tag: 'Water',
+                                imageLink:
+                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                              },
+                            });
+                          }
+                        }
+                      }}
+                    />
+                  )}
+                  sliderWidth={width - 16}
+                  itemWidth={width / 2}
+                />
+
+                <Box my={10} />
               </VStack>
             </Animated.ScrollView>
           </NativeViewGestureHandler>

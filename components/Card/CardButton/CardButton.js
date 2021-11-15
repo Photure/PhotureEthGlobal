@@ -1,8 +1,9 @@
 import React, {useRef} from 'react';
 import {Stack, HStack, Text, Pressable} from 'native-base';
-import LottieView from 'lottie-react-native';
 
 import {Edit} from '../../../icons/Edit';
+import {HeartOutline} from '../../../icons/HeartOutline';
+import {HeartFilled} from '../../../icons/HeartFilled';
 
 const CardButton = ({
   value,
@@ -31,24 +32,23 @@ const CardButton = ({
       }}>
       <Pressable
         onPress={() => {
-          if (pressed) {
-            ref.current.play(0, 35);
-            setPressed(false);
+          if (type === 'edit') {
+            console.log('Open Editor');
           } else {
-            ref.current.play(35, 75);
-            setPressed(true);
+            if (pressed) {
+              setPressed(false);
+            } else {
+              setPressed(true);
+            }
           }
         }}>
         <HStack space={2} px="2" alignItems="center">
           {type === 'edit' ? (
             <Edit fivehundred={fivehundred} onehundred={onehundred} />
+          ) : pressed ? (
+            <HeartFilled fivehundred={fivehundred} onehundred={onehundred} />
           ) : (
-            <LottieView
-              ref={ref}
-              source={require('./heart.json')}
-              loop={false}
-              style={{width: 24, height: 24}}
-            />
+            <HeartOutline fivehundred={fivehundred} onehundred={onehundred} />
           )}
           <Text
             _light={{
