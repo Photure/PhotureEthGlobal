@@ -115,6 +115,190 @@ const data = [
   },
 ];
 
+const dataTwo = [
+  {
+    id: '11',
+    title: 'Tree Walk',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Nature',
+    imageLink:
+      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
+  },
+  {
+    id: '12',
+    title: 'Square Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
+  },
+  {
+    id: '13',
+    title: 'Whats up?',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Sky',
+    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
+  },
+  {
+    id: '14',
+    title: 'Petal to the City',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Statue',
+    imageLink:
+      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
+  },
+  {
+    id: '15',
+    title: 'My Christmas Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
+  },
+  {
+    id: '16',
+    title: 'River Trip',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Water',
+    imageLink:
+      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+  },
+  {
+    id: '17',
+    title: 'Mountain Trail',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fall',
+    imageLink:
+      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
+  },
+  {
+    id: '18',
+    title: 'Fire in the Field',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fire',
+    imageLink:
+      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
+  },
+  {
+    id: '19',
+    title: 'Port of Pier',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'City',
+    imageLink:
+      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
+  },
+  {
+    id: '20',
+    title: 'Cold River',
+    walletAddress: 'Paula Green',
+    date: '15th June 2021',
+    tag: 'Winter',
+    imageLink:
+      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
+  },
+];
+
+const dataThree = [
+  {
+    id: '21',
+    title: 'Tree Walk',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Nature',
+    imageLink:
+      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
+  },
+  {
+    id: '22',
+    title: 'Square Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
+  },
+  {
+    id: '23',
+    title: 'Whats up?',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Sky',
+    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
+  },
+  {
+    id: '24',
+    title: 'Petal to the City',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Statue',
+    imageLink:
+      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
+  },
+  {
+    id: '25',
+    title: 'My Christmas Flower',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Flower',
+    imageLink:
+      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
+  },
+  {
+    id: '26',
+    title: 'River Trip',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Water',
+    imageLink:
+      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+  },
+  {
+    id: '27',
+    title: 'Mountain Trail',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fall',
+    imageLink:
+      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
+  },
+  {
+    id: '28',
+    title: 'Fire in the Field',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'Fire',
+    imageLink:
+      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
+  },
+  {
+    id: '29',
+    title: 'Port of Pier',
+    walletAddress: '0xccf3...7cC4',
+    date: '0.4 MATIC',
+    tag: 'City',
+    imageLink:
+      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
+  },
+  {
+    id: '30',
+    title: 'Cold River',
+    walletAddress: 'Paula Green',
+    date: '15th June 2021',
+    tag: 'Winter',
+    imageLink:
+      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
+  },
+];
+
 export default function FeedScreen({navigation}) {
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
@@ -124,15 +308,45 @@ export default function FeedScreen({navigation}) {
 
   const wc = useWalletConnect();
 
-  const ref = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
 
-  const y = useLazyRef(() => new Animated.Value(0));
-  const onScroll = useLazyRef(() =>
+  const yOne = useLazyRef(() => new Animated.Value(0));
+  const onScrollOne = useLazyRef(() =>
     Animated.event(
       [
         {
           nativeEvent: {
-            contentOffset: {y},
+            contentOffset: {y: yOne},
+          },
+        },
+      ],
+      {useNativeDriver: true},
+    ),
+  );
+
+  const yTwo = useLazyRef(() => new Animated.Value(0));
+  const onScrollTwo = useLazyRef(() =>
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {y: yTwo},
+          },
+        },
+      ],
+      {useNativeDriver: true},
+    ),
+  );
+
+  const yThree = useLazyRef(() => new Animated.Value(0));
+  const onScrollThree = useLazyRef(() =>
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {y: yThree},
           },
         },
       ],
@@ -233,7 +447,7 @@ export default function FeedScreen({navigation}) {
             width="100%"
             height="100%">
             <AnimatedFlatList
-              ref={ref}
+              ref={ref1}
               borderRadius={16}
               _light={{
                 bg: 'gray.200',
@@ -246,7 +460,7 @@ export default function FeedScreen({navigation}) {
               renderItem={({item, index}) => (
                 <Card
                   {...item}
-                  y={y}
+                  y={yOne}
                   index={index}
                   onPress={() => {
                     navigation.push('ItemDetails', {
@@ -265,7 +479,7 @@ export default function FeedScreen({navigation}) {
                 offset: cardHeight * index,
                 index,
               })}
-              {...{onScroll}}
+              {...{onScroll: onScrollOne}}
             />
           </Box>
           <Box
@@ -273,13 +487,85 @@ export default function FeedScreen({navigation}) {
             paddingLeft={4}
             paddingRight={4}
             width="100%"
-            height="100%"></Box>
+            height="100%">
+            <AnimatedFlatList
+              ref={ref2}
+              borderRadius={16}
+              _light={{
+                bg: 'gray.200',
+              }}
+              _dark={{
+                bg: 'gray.800',
+              }}
+              px={4}
+              data={dataTwo}
+              renderItem={({item, index}) => (
+                <Card
+                  {...item}
+                  y={yTwo}
+                  index={index}
+                  onPress={() => {
+                    navigation.push('ItemDetails', {
+                      item,
+                    });
+                    StatusBar.setHidden(true, 'slide');
+                  }}
+                />
+              )}
+              keyExtractor={item => item.id}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+              bounces={false}
+              getItemLayout={(data, index) => ({
+                length: cardHeight,
+                offset: cardHeight * index,
+                index,
+              })}
+              {...{onScroll: onScrollTwo}}
+            />
+          </Box>
           <Box
             key="3"
             paddingLeft={4}
             paddingRight={4}
             width="100%"
-            height="100%"></Box>
+            height="100%">
+            <AnimatedFlatList
+              ref={ref3}
+              borderRadius={16}
+              _light={{
+                bg: 'gray.200',
+              }}
+              _dark={{
+                bg: 'gray.800',
+              }}
+              px={4}
+              data={dataTwo}
+              renderItem={({item, index}) => (
+                <Card
+                  {...item}
+                  y={yThree}
+                  index={index}
+                  onPress={() => {
+                    navigation.push('ItemDetails', {
+                      item,
+                    });
+                    StatusBar.setHidden(true, 'slide');
+                  }}
+                />
+              )}
+              keyExtractor={item => item.id}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={16}
+              bounces={false}
+              getItemLayout={(data, index) => ({
+                length: cardHeight,
+                offset: cardHeight * index,
+                index,
+              })}
+              {...{onScroll: onScrollOne}}
+            />
+          </Box>
         </PagerView>
         <Box my={10} />
       </Box>
