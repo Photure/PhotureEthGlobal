@@ -1,13 +1,12 @@
-import React, {useEffect, useRef} from 'react';
-import {Dimensions, Animated as RNAnimate, Image} from 'react-native';
-import {Box} from 'native-base';
+import React, {useRef} from 'react';
+import {Dimensions, Image} from 'react-native';
+import {Box, View} from 'native-base';
 import {SharedElement} from 'react-navigation-shared-element';
-import {MotiPressable} from '@motify/interactions';
 
 import CardButton from './CardButton/CardButton';
 import Label from './Label/Label';
 import CardInfo from './CardInfo/CardInfo';
-import {MotiView} from '@motify/components';
+
 const {height: wHeight} = Dimensions.get('window');
 
 import Animated, {
@@ -26,23 +25,15 @@ export const MARGIN = 8;
 export const CARD_HEIGHT = DEFAULT_CARD_HEIGHT + MARGIN * 2;
 const height = wHeight - 64 - 90;
 
-const Card = ({
+const ScreenCard = ({
   id,
   title,
   walletAddress,
   date,
   tag,
-  y,
-  index,
   onPress,
   imageLink,
 }) => {
-  const position = RNAnimate.subtract(index * CARD_HEIGHT, y);
-  const isDisappearing = -CARD_HEIGHT;
-  const isTop = 0;
-  const isBottom = height - CARD_HEIGHT;
-  const isAppearing = height;
-
   const onehundred = () => {
     switch (tag) {
       case 'Nature':
@@ -135,38 +126,11 @@ const Card = ({
     }
   };
 
-  const ref = useRef(null);
-
-  const translateY = RNAnimate.add(
-    RNAnimate.add(
-      y,
-      y.interpolate({
-        inputRange: [0, 0.00001 + index * CARD_HEIGHT],
-        outputRange: [0, -index * CARD_HEIGHT],
-        extrapolateRight: 'clamp',
-      }),
-    ),
-    position.interpolate({
-      inputRange: [isBottom, isAppearing],
-      outputRange: [0, -CARD_HEIGHT / 4],
-      extrapolate: 'clamp',
-    }),
-  );
-  const scale = position.interpolate({
-    inputRange: [isDisappearing, isTop, isBottom, isAppearing],
-    outputRange: [0.5, 1, 1, 0.5],
-    extrapolate: 'clamp',
-  });
-
-  const opacity = position.interpolate({
-    inputRange: [isDisappearing, isTop, isBottom, isAppearing],
-    outputRange: [0.5, 1, 1, 0.5],
-  });
-
   const pressed = useSharedValue(false);
 
   const eventHandler = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
+      console.log(`item.${id}.photo`);
       pressed.value = true;
     },
     onEnd: (event, ctx) => {
@@ -182,7 +146,7 @@ const Card = ({
   });
 
   return (
-    <RNAnimate.View
+    <View
       style={[
         // eslint-disable-next-line react-native/no-inline-styles
         {
@@ -190,7 +154,6 @@ const Card = ({
           width: '100%',
           height: CARD_HEIGHT,
         },
-        {opacity, transform: [{translateY}, {scale}]},
       ]}>
       <Animated.View style={uas}>
         <Box my={4} overflow="hidden" width="100%" shadow={2} borderRadius={10}>
@@ -255,8 +218,8 @@ const Card = ({
           </TapGestureHandler>
         </Box>
       </Animated.View>
-    </RNAnimate.View>
+    </View>
   );
 };
 
-export default Card;
+export default ScreenCard;

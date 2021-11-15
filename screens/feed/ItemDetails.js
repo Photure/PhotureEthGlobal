@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Image, useWindowDimensions, StatusBar} from 'react-native';
+import {Image, useWindowDimensions, StatusBar, Pressable} from 'react-native';
 import {
   Box,
   VStack,
@@ -19,7 +19,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 
-import {HeartOutline} from '../../icons/HeartOutline';
+import LottieView from 'lottie-react-native';
 import {Edit} from '../../icons/Edit';
 
 import {
@@ -29,6 +29,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import {SharedElement} from 'react-navigation-shared-element';
+import ScreenCard from '../../components/Card/ScreenCard';
 
 const ItemDetails = ({navigation, route}) => {
   let hasBeenCalled = false;
@@ -44,7 +45,7 @@ const ItemDetails = ({navigation, route}) => {
   const goBack = () => {
     if (!hasBeenCalled) {
       StatusBar.setHidden(false, 'slide');
-      navigation.pop();
+      navigation.goBack();
       hasBeenCalled = true;
     }
   };
@@ -182,6 +183,8 @@ const ItemDetails = ({navigation, route}) => {
     scrollY.value = event.nativeEvent.contentOffset.y;
   };
 
+  const ref = useRef(null);
+  const [pressed, setPressed] = React.useState(false);
   return (
     <Box
       flex={1}
@@ -343,33 +346,46 @@ const ItemDetails = ({navigation, route}) => {
                     </Stack>
                   </SharedElement>
                   <SharedElement id={`item.${item.id}.like`}>
-                    <Stack
-                      p={1}
-                      borderRadius="lg"
-                      _light={{
-                        bg: 'gray.50:alpha.80',
-                      }}
-                      _dark={{
-                        bg: 'gray.700:alpha.80',
+                    <Pressable
+                      onPress={() => {
+                        if (pressed) {
+                          ref.current.play(0, 35);
+                          setPressed(false);
+                        } else {
+                          ref.current.play(35, 75);
+                          setPressed(true);
+                        }
                       }}>
-                      <HStack space={2} px="2" alignItems="center">
-                        <HeartOutline
-                          fivehundred={fivehundred}
-                          onehundred={onehundred}
-                        />
-                        <Text
-                          _light={{
-                            color: 'black',
-                          }}
-                          _dark={{
-                            color: 'white',
-                          }}
-                          fontSize="sm"
-                          bold>
-                          10
-                        </Text>
-                      </HStack>
-                    </Stack>
+                      <Stack
+                        p={1}
+                        borderRadius="lg"
+                        _light={{
+                          bg: 'gray.50:alpha.80',
+                        }}
+                        _dark={{
+                          bg: 'gray.700:alpha.80',
+                        }}>
+                        <HStack space={2} px="2" alignItems="center">
+                          <LottieView
+                            ref={ref}
+                            source={require('./heart.json')}
+                            loop={false}
+                            style={{width: 24, height: 24}}
+                          />
+                          <Text
+                            _light={{
+                              color: 'black',
+                            }}
+                            _dark={{
+                              color: 'white',
+                            }}
+                            fontSize="sm"
+                            bold>
+                            10
+                          </Text>
+                        </HStack>
+                      </Stack>
+                    </Pressable>
                   </SharedElement>
                 </HStack>
                 <Button
@@ -393,6 +409,122 @@ const ItemDetails = ({navigation, route}) => {
                   Edit of a lovely rose that inspired me and wanted to share
                   with you
                 </Heading>
+                {item.id === '1' ? (
+                  <Stack mx={6}>
+                    <ScreenCard
+                      id="200"
+                      title="Cold River"
+                      walletAddress="Paula Green"
+                      date="15th June 2021"
+                      tag="Winter"
+                      imageLink="https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg"
+                      onPress={() => {
+                        if (route.name === 'ItemDetails') {
+                          navigation.push('ItemDetailsOne', {
+                            item: {
+                              id: '200',
+                              title: 'Cold River',
+                              walletAddress: 'Paula Green',
+                              date: '15th June 2021',
+                              tag: 'Winter',
+                              imageLink:
+                                'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
+                            },
+                          });
+                        } else {
+                          navigation.push('ItemDetails', {
+                            item: {
+                              id: '200',
+                              title: 'Cold River',
+                              walletAddress: 'Paula Green',
+                              date: '15th June 2021',
+                              tag: 'Winter',
+                              imageLink:
+                                'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
+                            },
+                          });
+                        }
+                      }}
+                    />
+                  </Stack>
+                ) : item.id === '200' ? (
+                  <Stack mx={6}>
+                    <ScreenCard
+                      id="300"
+                      title="River Trip"
+                      walletAddress="0xccf3...7cC4"
+                      date="0.4 MATIC"
+                      tag="Water"
+                      imageLink="https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg"
+                      onPress={() => {
+                        if (route.name === 'ItemDetails') {
+                          navigation.push('ItemDetailsOne', {
+                            item: {
+                              id: '300',
+                              title: 'River Trip',
+                              walletAddress: '0xccf3...7cC4',
+                              date: '0.4 MATIC',
+                              tag: 'Water',
+                              imageLink:
+                                'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                            },
+                          });
+                        } else {
+                          navigation.push('ItemDetails', {
+                            item: {
+                              id: '300',
+                              title: 'River Trip',
+                              walletAddress: '0xccf3...7cC4',
+                              date: '0.4 MATIC',
+                              tag: 'Water',
+                              imageLink:
+                                'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                            },
+                          });
+                        }
+                      }}
+                    />
+                  </Stack>
+                ) : (
+                  <Stack mx={6}>
+                    <ScreenCard
+                      id="400"
+                      title="Port of Pier"
+                      walletAddress="0xccf3...7cC4"
+                      date="0.4 MATIC"
+                      tag="City"
+                      imageLink="https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg"
+                      onPress={() => {
+                        if (route.name === 'ItemDetails') {
+                          navigation.push('ItemDetailsOne', {
+                            item: {
+                              id: '400',
+                              title: 'Port of Pier',
+                              walletAddress: '0xccf3...7cC4',
+                              date: '0.4 MATIC',
+                              tag: 'City',
+                              imageLink:
+                                'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
+                            },
+                          });
+                        } else {
+                          navigation.push('ItemDetails', {
+                            item: {
+                              id: '400',
+                              title: 'Port of Pier',
+                              walletAddress: '0xccf3...7cC4',
+                              date: '0.4 MATIC',
+                              tag: 'City',
+                              imageLink:
+                                'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
+                            },
+                          });
+                        }
+                      }}
+                    />
+                  </Stack>
+                )}
+                <Box my={40} />
               </VStack>
             </Animated.ScrollView>
           </NativeViewGestureHandler>

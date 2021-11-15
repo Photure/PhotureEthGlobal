@@ -20,7 +20,7 @@ export default function Navigation() {
 
   const setTabBarVisibility = route => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'ItemDetails') {
+    if (routeName === 'ItemDetails' || routeName === 'ItemDetailsOne') {
       return false;
     }
     return true;

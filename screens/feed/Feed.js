@@ -540,7 +540,7 @@ export default function FeedScreen({navigation}) {
                 bg: 'gray.800',
               }}
               px={4}
-              data={dataTwo}
+              data={dataThree}
               renderItem={({item, index}) => (
                 <Card
                   {...item}
@@ -563,7 +563,7 @@ export default function FeedScreen({navigation}) {
                 offset: cardHeight * index,
                 index,
               })}
-              {...{onScroll: onScrollOne}}
+              {...{onScroll: onScrollThree}}
             />
           </Box>
         </PagerView>
