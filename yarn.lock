@@ -12351,6 +12351,13 @@ react-native-shared-element@^0.8.3:
   resolved "https://registry.yarnpkg.com/react-native-shared-element/-/react-native-shared-element-0.8.3.tgz#c49b6acdca9e5ac27acc73ec7e7ddbaa7af35248"
   integrity sha512-mbL0gWBaZgWc5YQUwwlzyUOToMbfE+QdNxlSK8MdRGX6ItssVH+JLbq8ilLRTNEO+cTFFosXdQwqBUAC4IPSww==
 
+react-native-sticky-parallax-header@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-sticky-parallax-header/-/react-native-sticky-parallax-header-0.4.1.tgz#c7c75544ab07e614dae4e437a370350d3527c480"
+  integrity sha512-0uUdMScV42o0uOV0krKXK3juG/ckjOA8kOrQxbcl1q6jit64hPjGBmdo2F2qwFDc3ukQKxeYOXYXsVZGoY/WSg==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-svg@12.1.1, react-native-svg@9.6.4, react-native-svg@^12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.1.tgz#5f292410b8bcc07bbc52b2da7ceb22caf5bcaaee"
