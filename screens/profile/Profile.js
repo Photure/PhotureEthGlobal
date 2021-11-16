@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import StickyParallaxHeader from 'react-native-sticky-parallax-header';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StatusBar, Dimensions} from 'react-native';
 import {useTheme, useColorMode, View, FlatList} from 'native-base';
-
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
+import { ProfileContext } from '../../contexts/ProfileContext';
+
 
 const {height, width} = Dimensions.get('window');
 
@@ -106,8 +107,27 @@ const data = [
 ];
 
 const ProfileScreen = ({navigation, route}) => {
+  const { galleryData } = useContext(ProfileContext)
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
+
+  const transformProfileData = () => {
+    const dataForFlatlist = []
+    galleryData.forEach((item,index) => {
+      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
+      const {image: imageLink, name: title, tag} = item.metadata
+
+      dataForFlatlist.push({
+        id,
+        title,
+        walletAddress: walletAddress || '',
+        date,
+        tag: !!tag ? tag : 'Nature',
+        imageLink,
+      })
+    })
+    return dataForFlatlist
+  }
 
   return (
     <SafeAreaView
@@ -134,10 +154,10 @@ const ProfileScreen = ({navigation, route}) => {
         title={`0xccf3...7cC4`}
         backgroundColor="#4e36c6"
         parallaxHeight={responsiveHeight(28)}
-        subtitle={`${data.length} Creations`}>
+        subtitle={`${transformProfileData().length} Creations`}>
         <FlatList
           borderRadius={16}
-          data={data}
+          data={transformProfileData()}
           contentContainerStyle={{
             alignItems: 'center',
             paddingBottom: 64,

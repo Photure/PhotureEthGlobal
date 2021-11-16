@@ -1,22 +1,43 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Alert, Animated, TouchableOpacity, ActivityIndicator, Image } from  'react-native';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { View, Text, StyleSheet, Alert, Animated, TouchableOpacity, ActivityIndicator, Image, ImageBackground } from  'react-native';
 import {Camera, useCameraDevices, CameraPreset } from 'react-native-vision-camera'
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Box, Stack, Button, Icon } from 'native-base'
 import { FlipCamera } from '../../assets/FlipCamera';
+import { Flash } from '../../assets/Flash';
+import { FlashOff } from '../../assets/FlashOff';
+import { Trash } from '../../assets/Trash';
+import PhotoFormModal from '../../components/PhotoFormModal';
+import { CameraContext } from '../../contexts/CameraContext';
+import { AlertModal } from '../../components/AlertDialog';
+import { SuccessModal } from '../../components/SuccessModal'
 
 export default function TakePhotoScreen(){
+    const [formValues, setFormValues] = useState({
+      name: '',
+      description:'',
+      tag: '',
+    })
+    const { handleMint, handleRetry, isLoadingModalVisible, errorCode, onTrash, transactionHash, clearTransactionHash } = useContext(CameraContext)
     const devices = useCameraDevices('wide-angle-camera')
-    const [device, updateDevice] = useState(devices.back)
+    const [cameraPosition, updateCameraPosition] = useState('back')
+    const device = devices[cameraPosition]
     const [isRecording, updateIsRecording] = useState(false)
     const [hasPermissions, updatePermissions] = useState(false)
     const [photo, updatePhoto] = useState(null)
     const cameraRef = useRef(null)
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const pressableRef = useRef(0);
+    const [toggleFlash, setToggleFlash] = useState('off');
+    const navigation = useNavigation()
+    const shouldHideTabBar = !!photo
+    const tabBarFlipperCallback = () => navigation.setParams({hideTabBar: !shouldHideTabBar})
+    const [showModal, setShowModal] = useState(false)
+
+    console.log(device)
 
     const handleOnLongPress = () => {
-        toggleIsRecording(true);
+        // toggleIsRecording(true);
         const options = {
           maxFileSize: 20000000,
         };
@@ -40,19 +61,16 @@ export default function TakePhotoScreen(){
         const diff = timeStamp - pressableRef.current.timeStamp;
         if (diff < 500) {
           const options = {
-            enableAutoDistortionCorrection: true,
+            enableAutoDistortionCorrection: false,
             enableAutoRedEyeReduction: true,
             enableAutoStabilization: true,
-            flash: 'off',
+            flash: toggleFlash,
             qualityPrioritization: 'balanced',
             skipMetadata: true,
-            // base64: false,
-            // exif: false,
-            // skipProcessing: true,
-            // onPictureSaved: handlePictureSaved,
           };
           const photo = await cameraRef.current.takePhoto(options);
           console.log(photo)
+          tabBarFlipperCallback()
           updatePhoto(photo.path)
         } else {
           cameraRef.current.stopRecording();
@@ -88,11 +106,19 @@ export default function TakePhotoScreen(){
                 updatePermissions(isAuthorized(microphonePermission))
             }
             
-            console.log('devices',await Camera.getAvailableCameraDevices())
-            updateDevice(devices.back)
+            // const [cameraPosition, updateCameraPosition] = useState('back')
+            // console.log('devices',await Camera.getAvailableCameraDevices())        devices.back) 
         }
     
     checkPermissions()
+
+    const handleFlashPress = (): void => {
+      if (toggleFlash === 'off') {
+        setToggleFlash('on');
+      } else {
+        setToggleFlash('off');
+      }
+    };
 
     if (device == null || !hasPermissions) return(
         <View style={styles.container}>
@@ -112,21 +138,16 @@ export default function TakePhotoScreen(){
                         audio={true}
                     />
                     <View style={styles.buttonContainer}>
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                             onPress={() => {
-                            setType(
-                                type === Camera.Constants.Type.back
-                                ? Camera.Constants.Type.front
-                                : Camera.Constants.Type.back,
+                              updateCameraPosition(                      
+                              cameraPosition === 'back'
+                                ? 'front'
+                                : 'back',
                             );
                             }}>
                             <FlipCamera />
-                        </TouchableOpacity> */}
-                        <Box>
-
-                        </Box>
-                        <Stack></Stack>
-                        <Button></Button>
+                        </TouchableOpacity>
                             <TouchableOpacity
                             delayLongPress={501}
                             onLongPress={handleOnLongPress}
@@ -134,29 +155,56 @@ export default function TakePhotoScreen(){
                             onPressIn={handleOnPressIn}>
                             <View style={styles.shutter} />
                         </TouchableOpacity>
-                        {/* <TouchableOpacity onPress={handleFlashPress}>
-                            {toggleFlash === Camera.Constants.FlashMode.off ? (
+                        <TouchableOpacity onPress={handleFlashPress}>
+                            {toggleFlash === 'off' ? (
                             <FlashOff />
                             ) : (
                             <Flash />
                             )}
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                   </View>
                     </Animated.View>
             // </PinchGestureHandler>
         )
         if(photo !== null) {
-            console.log('photo1',photo)
-            return (<View style={styles.container}>
-                <Image
-                    source={{uri: `file://${photo}`}}
-                    style={{flex:1, height: '100%', width: '100%'}}
-                />
-            </View>
+            console.log('photo1',formValues)
+            return (
+              <ImageBackground
+                  source={{uri: `file://${photo}`}}
+                  style={{flex:1, height: '100%', width: '100%'}}
+              >
+                <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
+                  <ActivityIndicator animating={isLoadingModalVisible} size={'large'} color={'red'}/>
+                </View>
+                <TouchableOpacity disabled={isLoadingModalVisible} style={styles.recordingIndicator} onPress={()=>{
+                  updatePhoto(null)
+                  onTrash()
+                  tabBarFlipperCallback()
+                }}>
+                  <Trash/>
+                </TouchableOpacity>
+                
+                  <Button disabled={isLoadingModalVisible} onPress={()=>setShowModal(true)} style={styles.mintButton}>
+                    <Text>Mint NFT</Text>
+                  </Button>
+                  <PhotoFormModal setFormValues={setFormValues} handleMint={handleMint} showModal={showModal} setShowModal={setShowModal} filePath={`file:/${photo}`} formValues={formValues} remixedItem={null}/>
+                  {errorCode !==null && errorCode >= 0 && <AlertModal  errorCode={errorCode} handleRetry={handleRetry} filePath={`file:/${photo}`} formValues={formValues} remixedItem={null}/>}
+                  {!!transactionHash && <SuccessModal clearTransactionHash={clearTransactionHash} transactionHash={transactionHash}></SuccessModal>}
+              </ImageBackground>
             )}
     }
 
 const styles = StyleSheet.create({
+    mintButton: {
+      position: 'absolute',
+      bottom: 40,
+      width: '80%',
+      // marginLeft: 'auto',
+      // marginRight: 'auto',
+      marginLeft: '30%',
+      marginRight: '30%'
+      // backgroundColor: 'transparent'
+    },
     container: {
         flex:1,
         justifyContent:'center',
@@ -227,11 +275,9 @@ const styles = StyleSheet.create({
       },
       recordingIndicator: {
         position: 'absolute',
-        backgroundColor: '#ff3c2f',
-        borderRadius: 25,
         width: 25,
         height: 25,
         top: 72,
-        right: 32,
+        left: 32,
       },
 })

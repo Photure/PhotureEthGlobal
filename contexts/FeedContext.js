@@ -17,10 +17,12 @@ import {ethers} from 'ethers'
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import Market from '../artifacts/contracts/Market.sol/NFTMarket.json'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+import { APIQueries } from '../constants/Queries'
 
 export const FeedContext = createContext({
     marketData: [],
     buyItem: () => null,
+    feedData: [],
     // createNFT: () => null,
     // getNFT: () => null,
 })
@@ -45,6 +47,26 @@ const MARKET_DATA_TYPES = {
     }
   };
 
+  const feedDataInitialState = [];
+const FEED_DATA_TYPES = {
+    SET_FEED_DATA: 'SET_FEED_DATA',
+  };
+
+  
+  const feedDataReducer = (state, action) => {
+    switch (action.type) {
+    case FEED_DATA_TYPES.SET_FEED_DATA:
+        return action.payload;
+        break;
+      case 'appendNewlyMintedNFT': 
+        const newAssetsArray = [...state, action.payload]
+        return newAssetsArray
+      default:
+        return state;
+        break;
+    }
+  };
+
 
   export const FeedProvider = (props: { children: React.ReactNode }): any => {
     // const [firstTimeLogin, setFirstTimeLogin] = useState<boolean>(false);
@@ -54,10 +76,14 @@ const MARKET_DATA_TYPES = {
     // const [ currentRouteName, setCurrentRouteName ] = useState<String>('')
     // const [tutorials, setTutorials] = useState<Array<ListDataType>>([]);
     const walletConnect = useWalletConnect()
-    const [marketData, dispatch] = useReducer(
+    const [marketData, dispatchMarket] = useReducer(
       marketDataReducer,
       marketDataInitialState,
     );
+    const [feedData, dispatchFeed] = useReducer(
+        feedDataReducer,
+        feedDataInitialState,
+      );
     const connection =new Web3(new Web3.providers.HttpProvider(MAINNET_INFURA_ENDPOINT,
       {headers: [
         {
@@ -122,8 +148,24 @@ const MARKET_DATA_TYPES = {
       }
 
     const getFeedItems = async () => {
-        
-    }
+        const query = APIQueries.feed.getFeedNFTs
+        fetch(query, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-Key':  MoralisAPIKey,
+            },
+          })
+            .then(async response => {
+      
+              const jsonResponse = await response.json()
+                console.log('FeedData Response', jsonResponse)
+                const nftArray = transformCollectionAssetsJsonResponse(jsonResponse.result)
+                console.log(nftArray)
+                dispatchFeed({type: FEED_DATA_TYPES.SET_FEED_DATA, payload: nftArray})
+            })
+            .catch(error => console.log('error getting nfts', error));
+        };
   
   
     const getMarketPlaceItems = async () => {
@@ -132,16 +174,21 @@ const MARKET_DATA_TYPES = {
       console.log('contract', contract)
       const marketDataReturn = await contract.methods.fetchMarketItems().call({from:walletConnect.accounts[0]})
       console.log('here goes',marketDataReturn)
-      dispatch({type: MARKET_DATA_TYPES.SET_MARKETPLACE_DATA, payload:marketDataReturn})
+      dispatchMarket({type: MARKET_DATA_TYPES.SET_MARKETPLACE_DATA, payload:marketDataReturn})
     };
   
     const transformCollectionAssetsJsonResponse = (assets) => {
       const nftArray = []
       assets.forEach(asset => {
         const { metadata, token_uri, token_address, owner_of, token_id, amount} = asset
-        if(metadata && token_uri)
+        if(metadata && token_uri){
         nftArray.push({metadata: JSON.parse(metadata), token_uri, token_address, owner_of, token_id, amount})
-      });
+    } else if (token_uri) {
+        const metadataCached = fetch(token_uri).then(async response=> await response.json())
+        console.log('meta was cached', metadataCached)
+        nftArray.push({metadata: JSON.parse(metadataCached), token_uri, token_address, owner_of, token_id, amount})
+    }
+    })
       return nftArray
     }
   
@@ -153,17 +200,19 @@ const MARKET_DATA_TYPES = {
     useEffect(() => {
       (async () => {
           getMarketPlaceItems();
+          getFeedItems()
       })();
-    }, [walletConnect, walletAddress]);
+    }, [walletConnect]);
   
     const acceptedValue = useMemo(
       () => ({
           // createNFT,
+          feedData,
           marketData,
           buyItem,
           // getNFT,
       }),
-      [marketData, buyItem],
+      [marketData, buyItem, feedData],
     );
     return (
       <FeedContext.Provider value={acceptedValue}>

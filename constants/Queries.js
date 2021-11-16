@@ -1,7 +1,8 @@
 import { ALTERNATIVE_MINTING_CONTRACT_ADDRESS } from '@env'
-const APIQueries = {
+
+export const APIQueries = {
     feed: {
-        getFeedNFTs: `https://deep-index.moralis.io/api/v2/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}?chain=polygon&format=decimal&offset=0&limit=50&order=DESC`,
+        getFeedNFTs: `https://deep-index.moralis.io/api/v2/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}/owners?chain=polygon&format=decimal&offset=0&limit=50&order=block_number.DESC`,
         getFeedNFTsNextPage: (offset)=>`https://deep-index.moralis.io/api/v2/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}?chain=polygon&format=decimal&offset=${offset}&limit=50&order=DESC`,
         getItemsForSale: '', // call method on contract
     },

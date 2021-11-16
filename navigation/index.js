@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
+import {getFocusedRouteNameFromRoute, useNavigationState, useRoute} from '@react-navigation/core';
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {useColorMode, useTheme, Image, CircleIcon} from 'native-base';
 
@@ -19,14 +19,15 @@ export default function Navigation() {
   const {colors} = useTheme();
 
   const setTabBarVisibility = route => {
+    console.log('set route',route)
     const routeName = getFocusedRouteNameFromRoute(route);
-
+    const { hideTabBar } = routeName === 'TakePhoto' && route?.state?.routes[0]?.params
     if (
       routeName === 'ItemDetails' ||
       routeName === 'ProfileItems' ||
       routeName === 'ProfileItemsOne' ||
-      routeName === 'ItemDetailsOne'
-    ) {
+      routeName === 'ItemDetailsOne' ||
+      hideTabBar) {
       return false;
     }
     return true;
@@ -70,9 +71,10 @@ export default function Navigation() {
         <TabNavigator.Screen
           name={'CameraStack'}
           component={CameraStack}
-          options={{
+          options={(route) =>({
+            tabBarVisible: setTabBarVisibility(route),
             tabBarIcon: ({focused, color, size}) => <Art color={color} />,
-          }}
+          })}
         />
         <TabNavigator.Screen
           name={'ProfileStack'}

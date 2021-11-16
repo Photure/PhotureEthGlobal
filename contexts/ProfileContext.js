@@ -56,7 +56,7 @@ export const ProfileProvider = (props: {children: React.ReactNode}): any => {
   // const [ currentRouteName, setCurrentRouteName ] = useState<String>('')
   // const [tutorials, setTutorials] = useState<Array<ListDataType>>([]);
   const walletConnect = useWalletConnect();
-  const [walletAddress, setWalletAddress] = (useState < String) | (null > null);
+  // const [walletAddress, setWalletAddress] = (useState < String) | (null > null);
   const [galleryData, dispatch] = useReducer(
     galleryReducer,
     galleryInitialState,
@@ -138,14 +138,10 @@ export const ProfileProvider = (props: {children: React.ReactNode}): any => {
     }
   }
 
-  const getGalleryForWallet = async (myWallet: String | null) => {
-    console.log(myWallet);
-    if (myWallet === null) {
-      console.log('inif');
-      return [];
-    }
-    const moralisQuery = `https://deep-index.moralis.io/api/v2/${myWallet}/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}?chain=polygon&format=decimal`;
-    console.log('myWallet', myWallet);
+  const getGalleryForWallet = async () => {
+    
+    
+    const moralisQuery = `https://deep-index.moralis.io/api/v2/${walletConnect._accounts[0]}/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}?chain=polygon&format=decimal`;
     fetch(moralisQuery, {
       method: 'GET',
       headers: {
@@ -170,8 +166,7 @@ export const ProfileProvider = (props: {children: React.ReactNode}): any => {
   const transformCollectionAssetsJsonResponse = assets => {
     const nftArray = [];
     assets.forEach(asset => {
-      const {metadata, token_uri, token_address, owner_of, token_id, amount} =
-        asset;
+      const {metadata, token_uri, token_address, owner_of, token_id, amount} = asset;
       if (metadata && token_uri)
         nftArray.push({
           metadata: JSON.parse(metadata),
@@ -191,15 +186,9 @@ export const ProfileProvider = (props: {children: React.ReactNode}): any => {
   // }
 
   useEffect(() => {
-    (async () => {
-      const wallet = walletConnect.accounts[0];
-      setWalletAddress(wallet);
-      if (wallet !== null) {
         console.log('in if');
-        getGalleryForWallet(wallet);
-      }
-    })();
-  }, [walletConnect, walletAddress]);
+        getGalleryForWallet();
+  }, [walletConnect]);
 
   const acceptedValue = useMemo(
     () => ({

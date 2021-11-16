@@ -202,7 +202,7 @@ const ItemDetails = ({navigation, route}) => {
         return 'orange.100';
       case 'Fire':
         return 'red.100';
-      case 'City':
+      case 'Landmarks':
         return 'purple.100';
       case 'Winter':
         return 'blueGray.100';
@@ -225,7 +225,7 @@ const ItemDetails = ({navigation, route}) => {
         return 'orange.200';
       case 'Fire':
         return 'red.200';
-      case 'City':
+      case 'Landmarks':
         return 'purple.200';
       case 'Winter':
         return 'blueGray.200';
@@ -248,7 +248,7 @@ const ItemDetails = ({navigation, route}) => {
         return 'orange.500';
       case 'Fire':
         return 'red.500';
-      case 'City':
+      case 'Landmarks':
         return 'purple.500';
       case 'Winter':
         return 'blueGray.500';
@@ -271,7 +271,7 @@ const ItemDetails = ({navigation, route}) => {
         return 'orange.700';
       case 'Fire':
         return 'red.700';
-      case 'City':
+      case 'Landmarks':
         return 'purple.700';
       case 'Winter':
         return 'blueGray.700';

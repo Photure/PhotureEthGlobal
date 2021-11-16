@@ -39,7 +39,7 @@ const CardInfo = ({walletAddress, title, date, id}) => {
               c: 'gray.700',
               opacity: 1,
             }}>
-            {walletAddress}
+            {`${walletAddress.substring(0,4)}...${walletAddress.substring(walletAddress.length-4,walletAddress.length)}`}
           </Text>
         </HStack>
         <Text

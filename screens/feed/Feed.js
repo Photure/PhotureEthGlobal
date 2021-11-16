@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Animated, Dimensions, StatusBar, TouchableOpacity} from 'react-native';
 import web3 from 'web3';
 import {useColorMode, useTheme, FlatList, Box} from 'native-base';
@@ -11,6 +11,7 @@ import {PagerView} from 'react-native-pager-view';
 import Card from '../../components/Card/Card';
 
 import Market from '../../artifacts/contracts/Market.sol/NFTMarket.json';
+import { useFeedContext } from '../../contexts/FeedContext';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -300,6 +301,7 @@ const dataThree = [
 ];
 
 export default function FeedScreen({navigation}) {
+  const { feedData, marketData } = useFeedContext()
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
 
@@ -325,6 +327,17 @@ export default function FeedScreen({navigation}) {
       {useNativeDriver: true},
     ),
   );
+  useEffect(()=> {
+    console.log(wc)
+    if(!wc.connected && wc?.connect){
+      wc.connect({
+        chainId: 80001
+      })
+    }
+  }, [wc.connected])
+    if(wc.on){
+      wc.on('connect', ()=> wc._qrcodeModal.close())
+    }
 
   const yTwo = useLazyRef(() => new Animated.Value(0));
   const onScrollTwo = useLazyRef(() =>
@@ -381,6 +394,26 @@ export default function FeedScreen({navigation}) {
   };
 
   const swipeRef = useRef(null);
+
+  console.log('feedData, marketData', feedData, marketData)
+
+  const transformFeedData = () => {
+    const dataForFlatlist = []
+    feedData.forEach((item,index) => {
+      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
+      const {image: imageLink, name: title, tag} = item.metadata
+
+      dataForFlatlist.push({
+        id,
+        title,
+        walletAddress: walletAddress || '',
+        date,
+        tag: !!tag ? tag : 'Nature',
+        imageLink,
+      })
+    })
+    return dataForFlatlist
+  }
 
   return (
     <SafeAreaView
@@ -456,7 +489,7 @@ export default function FeedScreen({navigation}) {
                 bg: 'gray.800',
               }}
               px={4}
-              data={data}
+              data={transformFeedData()}
               renderItem={({item, index}) => (
                 <Card
                   {...item}
