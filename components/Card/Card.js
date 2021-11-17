@@ -34,6 +34,7 @@ const Card = ({
   index,
   onPress,
   imageLink,
+  onEditPress,
 }) => {
   const position = RNAnimate.subtract(index * CARD_HEIGHT, y);
   const isDisappearing = -CARD_HEIGHT;
@@ -218,6 +219,7 @@ const Card = ({
               type="like"
               onehundred={onehundred}
               fivehundred={fivehundred}
+              onPress={onEditPress}
             />
           </SharedElement>
           <SharedElement
@@ -225,6 +227,7 @@ const Card = ({
             style={{position: 'absolute', left: '5%'}}>
             <CardButton
               value={276}
+              onPress={onEditPress}
               type="edit"
               onehundred={onehundred}
               fivehundred={fivehundred}

@@ -5,14 +5,7 @@ import {Edit} from '../../../icons/Edit';
 import {HeartOutline} from '../../../icons/HeartOutline';
 import {HeartFilled} from '../../../icons/HeartFilled';
 
-const CardButton = ({
-  value,
-  onehundred,
-  fivehundred,
-  left = undefined,
-  right = undefined,
-  type,
-}) => {
+const CardButton = ({value, onehundred, fivehundred, type, onPress}) => {
   const ref = useRef(null);
   const [pressed, setPressed] = React.useState(false);
 
@@ -20,8 +13,6 @@ const CardButton = ({
     <Stack
       p={1}
       position="absolute"
-      left={left}
-      right={right}
       top={5}
       borderRadius="lg"
       _light={{
@@ -33,7 +24,7 @@ const CardButton = ({
       <Pressable
         onPress={() => {
           if (type === 'edit') {
-            console.log('Open Editor');
+            onPress();
           } else {
             if (pressed) {
               setPressed(false);

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {Image, useWindowDimensions, StatusBar, Pressable} from 'react-native';
 import {
   Box,
@@ -36,6 +36,16 @@ import ScreenCard from '../../components/Card/ScreenCard';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
 
 const USER_WALLET_ADDRESS = '0xccf3e94792cd0b3484f54e6110ae1b3445a67cc4';
+
+import {PESDK, PhotoEditorModal} from 'react-native-photoeditorsdk';
+import {configuration} from './data';
+
+import {useFeedContext} from '../../contexts/FeedContext';
+
+import PhotoFormModal from '../../components/PhotoFormModal';
+import {CameraContext} from '../../contexts/CameraContext';
+import {AlertModal} from '../../components/AlertDialog';
+import {SuccessModal} from '../../components/SuccessModal';
 
 const data = [
   {
@@ -133,6 +143,20 @@ const ItemDetails = ({navigation, route}) => {
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const [previewImageURI, setPreviewImageURI] = useState(
+    'https://via.placeholder.com/150',
+  );
+
+  const [showPreview, setShowPreview] = useState(false);
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    description: '',
+    tag: '',
+  });
+
   const {item} = route.params;
   const name = route.name;
 
@@ -144,6 +168,16 @@ const ItemDetails = ({navigation, route}) => {
   const scale = useSharedValue(1);
 
   const hasParent = true;
+
+  const {
+    handleMint,
+    handleRetry,
+    isLoadingModalVisible,
+    errorCode,
+    onTrash,
+    transactionHash,
+    clearTransactionHash,
+  } = useContext(CameraContext);
 
   const goBack = () => {
     if (!hasBeenCalled) {
@@ -420,35 +454,41 @@ const ItemDetails = ({navigation, route}) => {
                     </Stack>
                   </SharedElement>
                   <SharedElement id={`item.${item.id}.edit`}>
-                    <Stack
-                      p={1}
-                      borderRadius="lg"
-                      mr={2}
-                      _light={{
-                        bg: 'gray.50:alpha.80',
-                      }}
-                      _dark={{
-                        bg: 'gray.700:alpha.80',
+                    <Pressable
+                      onPress={() => {
+                        setShowPreview(true);
+                        setPreviewImageURI(item.imageLink);
                       }}>
-                      <HStack space={2} px="2" alignItems="center">
-                        <Edit
-                          fivehundred={fivehundred}
-                          onehundred={onehundred}
-                        />
+                      <Stack
+                        p={1}
+                        borderRadius="lg"
+                        mr={2}
+                        _light={{
+                          bg: 'gray.50:alpha.80',
+                        }}
+                        _dark={{
+                          bg: 'gray.700:alpha.80',
+                        }}>
+                        <HStack space={2} px="2" alignItems="center">
+                          <Edit
+                            fivehundred={fivehundred}
+                            onehundred={onehundred}
+                          />
 
-                        <Text
-                          _light={{
-                            color: 'black',
-                          }}
-                          _dark={{
-                            color: 'white',
-                          }}
-                          fontSize="sm"
-                          bold>
-                          276
-                        </Text>
-                      </HStack>
-                    </Stack>
+                          <Text
+                            _light={{
+                              color: 'black',
+                            }}
+                            _dark={{
+                              color: 'white',
+                            }}
+                            fontSize="sm"
+                            bold>
+                            276
+                          </Text>
+                        </HStack>
+                      </Stack>
+                    </Pressable>
                   </SharedElement>
                   <SharedElement id={`item.${item.id}.like`}>
                     <Pressable
@@ -680,6 +720,46 @@ const ItemDetails = ({navigation, route}) => {
           </NativeViewGestureHandler>
         </Animated.View>
       </PanGestureHandler>
+      <PhotoFormModal
+        setFormValues={setFormValues}
+        handleMint={handleMint}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        filePath={previewImageURI}
+        formValues={formValues}
+        remixedItem={null}
+      />
+      {errorCode !== null && errorCode >= 0 && (
+        <AlertModal
+          errorCode={errorCode}
+          handleRetry={handleRetry}
+          filePath={previewImageURI}
+          formValues={formValues}
+          remixedItem={null}
+        />
+      )}
+      {!!transactionHash && (
+        <SuccessModal
+          clearTransactionHash={clearTransactionHash}
+          transactionHash={transactionHash}></SuccessModal>
+      )}
+      <PhotoEditorModal
+        image={{uri: previewImageURI}}
+        onExport={photoEditorResult => {
+          console.log(previewImageURI);
+          //setShowPreview(false);
+          setShowModal(true);
+          setPreviewImageURI(photoEditorResult.image);
+          // navigation.navigate('CameraStack', {
+          //   uri: photoEditorResult.image,
+          // });
+        }}
+        onCancel={() => {
+          setShowPreview(false);
+        }}
+        visible={showPreview}
+        configuration={configuration}
+      />
     </Box>
   );
 };

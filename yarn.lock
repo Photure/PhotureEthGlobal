@@ -12338,6 +12338,11 @@ react-native-pager-view@^6.0.0-rc.0:
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.0.0-rc.0.tgz#5222b2bdb7154ce52123c2f002949456f6a245a9"
   integrity sha512-s4Hh84hcwFC/d07H86tekAuDAgVrUTT4dKHU62c8oPsUBuRMwGlsAtMCfK5c/Pde6YfP4NkH6kH4qizw3QoaGg==
 
+react-native-photoeditorsdk@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.11.0.tgz#c8dc1d05b73571715ef8fd1fcb3e311de34355bf"
+  integrity sha512-P9g4w0eIiVo/6l+lIYI3wRaJnEYK8ICPxkXlTRjek4uQgM5kUfJi1XUsOaxVdhub5kFEOaaYNFReHhVhY000Jw==
+
 react-native-qrcode-svg@6.0.6:
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/react-native-qrcode-svg/-/react-native-qrcode-svg-6.0.6.tgz#bd4756cc0d76eeb3d162dca2f55eea80e3ebbe97"
