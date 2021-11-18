@@ -28,8 +28,10 @@ const CardButton = ({value, onehundred, fivehundred, type, onPress}) => {
           } else {
             if (pressed) {
               setPressed(false);
+              onPress()
             } else {
               setPressed(true);
+              onPress()
             }
           }
         }}>

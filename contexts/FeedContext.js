@@ -165,26 +165,25 @@ export const FeedProvider = (props: {children: React.ReactNode}): any => {
     }
   }
 
-  const getFeedItems = async () => {
-    const query = APIQueries.feed.getFeedNFTs;
-    fetch(query, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': MoralisAPIKey,
-      },
-    })
-      .then(async response => {
-        const jsonResponse = await response.json();
-        console.log('FeedData Response', jsonResponse);
-        const nftArray = transformCollectionAssetsJsonResponse(
-          jsonResponse.result,
-        );
-        console.log(nftArray);
-        dispatchFeed({type: FEED_DATA_TYPES.SET_FEED_DATA, payload: nftArray});
-      })
-      .catch(error => console.log('error getting nfts', error));
-  };
+    const getFeedItems = async () => {
+        const query = APIQueries.feed.getFeedNFTs
+        fetch(query, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-Key':  MoralisAPIKey,
+            },
+          })
+            .then(async response => {
+      
+              const jsonResponse = await response.json()
+                console.log('FeedData Response', jsonResponse)
+                const nftArray = await transformCollectionAssetsJsonResponse(jsonResponse.result)
+                console.log('nftArray',nftArray)
+                dispatchFeed({type: FEED_DATA_TYPES.SET_FEED_DATA, payload: nftArray})
+            })
+            .catch(error => console.log('error getting nfts', error));
+        };
 
   const getMarketPlaceItems = async () => {
     console.log('getMarket');
@@ -203,22 +202,38 @@ export const FeedProvider = (props: {children: React.ReactNode}): any => {
     });
   };
 
-  const transformCollectionAssetsJsonResponse = assets => {
+  const transformCollectionAssetsJsonResponse = async assets => {
     const nftArray = [];
-    assets.forEach(asset => {
-      const {metadata, token_uri, token_address, owner_of, token_id, amount} =
-        asset;
-      if (metadata && token_uri) {
-        nftArray.push({
-          metadata: JSON.parse(metadata),
-          token_uri,
-          token_address,
-          owner_of,
-          token_id,
-          amount,
-        });
-      }
-    });
+    for(let i = 0; i<assets.length ; i++) {
+        let {metadata, token_uri, token_address, owner_of, token_id, amount} = assets[i];
+        
+          if (metadata && token_uri) {
+            nftArray.push({
+              metadata: JSON.parse(metadata),
+              token_uri,
+              token_address,
+              owner_of,
+              token_id,
+              amount,
+            });
+        // } else if(token_uri) {
+        //   const data = async ()=> await fetch(token_uri, {
+        //       method: 'GET'
+        //         }).then(async response => {
+        //         const jsonResponse = await response.json()
+        //         console.log('rawData get', jsonResponse)
+        //         return Promise.resolve(jsonResponse)
+        //         })
+        //     nftArray.push({
+        //         metaData: await data(),
+        //         token_uri,
+        //         token_address,
+        //         owner_of,
+        //         token_id,
+        //         amount
+        //     })
+        }
+    };
     return nftArray;
   };
 

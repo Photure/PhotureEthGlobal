@@ -19,10 +19,10 @@ const ProfileScreen = ({navigation, route}) => {
   const {colors} = useTheme();
 
   const transformProfileData = () => {
-    const dataForFlatlist = [];
-    galleryData.forEach((item, index) => {
-      const {token_id: id, owner_of: walletAddress = '', price: date} = item;
-      const {image: imageLink, name: title, tag} = item.metadata;
+    const dataForFlatlist = []
+    galleryData.forEach((item,index) => {
+      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
+      const {image: imageLink, name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
 
       dataForFlatlist.push({
         id,
@@ -31,10 +31,17 @@ const ProfileScreen = ({navigation, route}) => {
         date,
         tag: !!tag ? tag : 'Nature',
         imageLink,
-      });
-    });
-    return dataForFlatlist;
-  };
+        children,
+        likes,
+        description,
+        timestamp,
+        parent,
+        adam,
+        file_type
+      })
+    })
+    return dataForFlatlist
+  }
 
   return (
     <SafeAreaView

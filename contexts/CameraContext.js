@@ -198,6 +198,37 @@ export const CameraProvider = (props: {children: React.ReactNode}): any => {
     }
   };
 
+  const createSocialContract =  async (tokenId) => {
+    const data = connection.eth.abi.encodeFunctionCall(
+      {
+        name: 'createSocialItem',
+        type: 'function',
+        inputs: [
+          {
+            type: 'string',
+            name: 'token_id',
+          },
+        ],
+      },
+      [tokenId],
+    );
+    console.log('mintData', data);
+    const encodedTransaction = {
+      from: wc.accounts[0],
+      to: '', // this will be the contract address for our social contract,
+      data,
+      gas: 500000,
+    };
+    try {
+      const transaction = await wc.sendTransaction(encodedTransaction);
+      console.log('its working', transaction);
+      return transaction;
+    } catch (err) {
+      console.log('error NFT Contract', err);
+    }
+  };
+  
+
   const uploadMetadata = (URLFromResponse, formValues, remixedItem, filePath) =>
     new Promise((resolve, reject) => {
       console.log('uploadMeta URL', URLFromResponse);
@@ -254,39 +285,35 @@ export const CameraProvider = (props: {children: React.ReactNode}): any => {
 
   // Helpers
 
-  const formatMetadata = (
-    URLFromResponse,
-    formValues,
-    remixedItem,
-    filePath,
-  ) => {
-    const {name, description, tag} = formValues;
-    const likes = [];
-    const timestamp = Date.now();
-    const file_url = URLFromResponse;
-    const file_type = getFileType(filePath);
-    const dimensions =
-      file_type === 'image'
-        ? Image.getSize(filePath, (width, height) => ({width, height}))
-        : null;
-    const custom_fields = {
-      tag,
-      likes,
-      timestamp,
-      file_type,
-      ...dimensions,
-      isRemix: !!remixedItem || false, // update later
-      parent: remixedItem?.token_id || '', //
-      adam: remixedItem?.metadata?.adam || wc._accounts[0],
-    };
-    console.log('formated meta', custom_fields, name, description, file_url);
-    return {
-      custom_fields,
-      name,
-      description,
-      file_url,
-    };
-  };
+    const formatMetadata = (URLFromResponse, formValues, remixedItem, filePath) => {
+        const { name, description, tag } = formValues
+        const likes = []
+        const timestamp = Date.now()
+        const file_url = URLFromResponse
+        const file_type =  getFileType(filePath)
+        const dimensions = file_type === 'image' ? Image.getSize(filePath, (width, height)=> ({width, height})): null
+        const custom_fields = {
+            tag,
+          likes,
+          timestamp,
+          file_type,
+          ...dimensions,
+          isRemix: !!remixedItem || false, // update later
+          parent: remixedItem?.id || '0', //
+          adam: remixedItem?.adam || wc._accounts[0],
+          // children: []
+        }
+        console.log('formated meta', custom_fields,
+        name,
+        description,
+        file_url)
+        return {
+          custom_fields,
+          name,
+          description,
+          file_url
+        }
+      }
 
   const convertImageToFormData = (filePath, name) => {
     const form = new FormData();

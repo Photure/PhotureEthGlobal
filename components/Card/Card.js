@@ -17,6 +17,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {TapGestureHandler} from 'react-native-gesture-handler';
+import { withItemContext, useItemContext } from '../../contexts/ItemContext';
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
 const DEFAULT_CARD_HEIGHT = wHeight / 3 + 50;
 
@@ -35,7 +37,36 @@ const Card = ({
   onPress,
   imageLink,
   onEditPress,
+  likes,
+  description,
+  timestamp,
+  parent,
+  children = [],
+  adam,
+  file_type,
 }) => {
+  const wholeItem = {
+    id,
+    title,
+    walletAddress,
+    date,
+    tag,
+    y,
+    index,
+    onPress,
+    imageLink,
+    likes,
+    description,
+    timestamp,
+    parent,
+    children,
+    adam,
+    file_type
+  }
+  console.log('likesCard',likes)
+  const wc = useWalletConnect()
+  const usersWalletAddress = wc._accounts[0]
+  const { handleLikePress } = useItemContext()
   const position = RNAnimate.subtract(index * CARD_HEIGHT, y);
   const isDisappearing = -CARD_HEIGHT;
   const isTop = 0;
@@ -215,18 +246,19 @@ const Card = ({
             id={`item.${id}.like`}
             style={{position: 'absolute', right: '25%'}}>
             <CardButton
-              value={10}
+              value={likes.length}
               type="like"
+              isLiked={likes.includes(usersWalletAddress)}
               onehundred={onehundred}
               fivehundred={fivehundred}
-              onPress={onEditPress}
+              onPress={() => handleLikePress(wholeItem)}
             />
           </SharedElement>
           <SharedElement
             id={`item.${id}.edit`}
             style={{position: 'absolute', left: '5%'}}>
             <CardButton
-              value={276}
+              value={children.length}
               onPress={onEditPress}
               type="edit"
               onehundred={onehundred}
@@ -260,4 +292,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default withItemContext(Card);

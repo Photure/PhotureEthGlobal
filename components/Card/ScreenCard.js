@@ -33,6 +33,7 @@ const ScreenCard = ({
   tag,
   onPress,
   imageLink,
+  ...rest
 }) => {
   const onehundred = () => {
     switch (tag) {
@@ -178,7 +179,7 @@ const ScreenCard = ({
             id={`item.${id}.like`}
             style={{position: 'absolute', right: '25%'}}>
             <CardButton
-              value={10}
+              value={rest.likes.length}
               type="like"
               onehundred={onehundred}
               fivehundred={fivehundred}
@@ -188,7 +189,7 @@ const ScreenCard = ({
             id={`item.${id}.edit`}
             style={{position: 'absolute', left: '5%'}}>
             <CardButton
-              value={276}
+              value={rest.children.length}
               type="edit"
               onehundred={onehundred}
               fivehundred={fivehundred}

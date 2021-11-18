@@ -31,194 +31,11 @@ const useLazyRef = initializer => {
   return ref.current;
 };
 
-const dataTwo = [
-  {
-    id: '11',
-    title: 'Tree Walk',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Nature',
-    imageLink:
-      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
-  },
-  {
-    id: '12',
-    title: 'Square Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
-  },
-  {
-    id: '13',
-    title: 'Whats up?',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Sky',
-    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
-  },
-  {
-    id: '14',
-    title: 'Petal to the City',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Statue',
-    imageLink:
-      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
-  },
-  {
-    id: '15',
-    title: 'My Christmas Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
-  },
-  {
-    id: '16',
-    title: 'River Trip',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Water',
-    imageLink:
-      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-  },
-  {
-    id: '17',
-    title: 'Mountain Trail',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fall',
-    imageLink:
-      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
-  },
-  {
-    id: '18',
-    title: 'Fire in the Field',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fire',
-    imageLink:
-      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
-  },
-  {
-    id: '19',
-    title: 'Port of Pier',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'City',
-    imageLink:
-      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
-  },
-  {
-    id: '20',
-    title: 'Cold River',
-    walletAddress: 'Paula Green',
-    date: '15th June 2021',
-    tag: 'Winter',
-    imageLink:
-      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
-  },
-];
-
-const dataThree = [
-  {
-    id: '21',
-    title: 'Tree Walk',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Nature',
-    imageLink:
-      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
-  },
-  {
-    id: '22',
-    title: 'Square Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
-  },
-  {
-    id: '23',
-    title: 'Whats up?',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Sky',
-    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
-  },
-  {
-    id: '24',
-    title: 'Petal to the City',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Statue',
-    imageLink:
-      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
-  },
-  {
-    id: '25',
-    title: 'My Christmas Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
-  },
-  {
-    id: '26',
-    title: 'River Trip',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Water',
-    imageLink:
-      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-  },
-  {
-    id: '27',
-    title: 'Mountain Trail',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fall',
-    imageLink:
-      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
-  },
-  {
-    id: '28',
-    title: 'Fire in the Field',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fire',
-    imageLink:
-      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
-  },
-  {
-    id: '29',
-    title: 'Port of Pier',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'City',
-    imageLink:
-      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
-  },
-  {
-    id: '30',
-    title: 'Cold River',
-    walletAddress: 'Paula Green',
-    date: '15th June 2021',
-    tag: 'Winter',
-    imageLink:
-      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
-  },
-];
-
 export default function FeedScreen({navigation}) {
-  const {feedData, marketData} = useFeedContext();
+  const {feedData =[], marketData} = useFeedContext();
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
+  const [itemToRemix, setItemToRemix] = useState(null)
 
   const [showModal, setShowModal] = useState(false);
 
@@ -273,7 +90,7 @@ export default function FeedScreen({navigation}) {
   );
   useEffect(() => {
     console.log(wc);
-    if (!wc.connected && wc?.connect) {
+    if ((!wc.connected && wc?.connect) || (!wc?.session?.connected && wc?.connect) ) {
       wc.connect({
         chainId: 137,
       });
@@ -340,13 +157,15 @@ export default function FeedScreen({navigation}) {
 
   const swipeRef = useRef(null);
 
-  console.log('feedData, marketData', feedData, marketData);
+  console.log('remixedItem', itemToRemix);
 
   const transformFeedData = () => {
-    const dataForFlatlist = [];
-    feedData.forEach((item, index) => {
-      const {token_id: id, owner_of: walletAddress = '', price: date} = item;
-      const {image: imageLink, name: title, tag} = item.metadata;
+    console.log('feedDataInTransform', feedData)
+    const dataForFlatlist = []
+    feedData.forEach((item,index) => {
+      console.log('need to grab everything off Item', item)
+      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
+      const {image: imageLink, name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
 
       dataForFlatlist.push({
         id,
@@ -355,10 +174,17 @@ export default function FeedScreen({navigation}) {
         date,
         tag: !!tag ? tag : 'Nature',
         imageLink,
-      });
-    });
-    return dataForFlatlist;
-  };
+        children,
+        likes,
+        description,
+        timestamp,
+        parent,
+        adam,
+        file_type
+      })
+    })
+    return dataForFlatlist
+  }
 
   return (
     <SafeAreaView
@@ -447,6 +273,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
+                    console.log('onEditPress', item)
+                    setItemToRemix(item)
                     setShowPreview(true);
                     console.log(feedData[index].metadata.image);
                     setPreviewImageURI(feedData[index].metadata.image);
@@ -481,7 +309,7 @@ export default function FeedScreen({navigation}) {
                 bg: 'gray.800',
               }}
               px={4}
-              data={dataTwo}
+              data={transformFeedData()}
               renderItem={({item, index}) => (
                 <Card
                   {...item}
@@ -494,6 +322,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
+                    console.log('onEditPress', item)
+                    setItemToRemix(item)
                     setShowPreview(true);
                     setPreviewImageURI(feedData[index].metadata.image);
                   }}
@@ -527,7 +357,7 @@ export default function FeedScreen({navigation}) {
                 bg: 'gray.800',
               }}
               px={4}
-              data={dataThree}
+              data={transformFeedData()}
               renderItem={({item, index}) => (
                 <Card
                   {...item}
@@ -540,6 +370,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
+                    console.log('onEditPress', item)
+                    setItemToRemix(item)
                     setShowPreview(true);
                     setPreviewImageURI(feedData[index].metadata.image);
                   }}
@@ -567,7 +399,7 @@ export default function FeedScreen({navigation}) {
         setShowModal={setShowModal}
         filePath={previewImageURI}
         formValues={formValues}
-        remixedItem={null}
+        remixedItem={itemToRemix}
       />
       {errorCode !== null && errorCode >= 0 && (
         <AlertModal
@@ -575,7 +407,7 @@ export default function FeedScreen({navigation}) {
           handleRetry={handleRetry}
           filePath={previewImageURI}
           formValues={formValues}
-          remixedItem={null}
+          remixedItem={itemToRemix}
         />
       )}
       {!!transactionHash && (
@@ -583,7 +415,7 @@ export default function FeedScreen({navigation}) {
           clearTransactionHash={clearTransactionHash}
           transactionHash={transactionHash}></SuccessModal>
       )}
-      <PhotoEditorModal
+      {<PhotoEditorModal
         image={{uri: previewImageURI}}
         onExport={photoEditorResult => {
           console.log(previewImageURI);
@@ -596,7 +428,7 @@ export default function FeedScreen({navigation}) {
         }}
         visible={showPreview}
         configuration={configuration}
-      />
+      />}
     </SafeAreaView>
   );
 }

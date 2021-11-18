@@ -19,7 +19,7 @@ export const APIQueries = {
     },
     itemDetails: {
         purchaseItem: `buyItem`, // call method on contract
-        getItemMetadata: ``, // should already have it
+        getItemByTokenId: (tokenId) => `https://deep-index.moralis.io/api/v2/nft/${ALTERNATIVE_MINTING_CONTRACT_ADDRESS}/${tokenId}/owners?chain=polygon&format=decimal`, // should already have it
         addLike: 'addLike', // Updating the metadata on an item
         removeLike: 'removeLike', // Updating the metadata on an item
     }

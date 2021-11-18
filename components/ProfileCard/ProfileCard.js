@@ -35,6 +35,8 @@ const ProfileCard = ({
   index,
   containerWidth,
   isFromDetails,
+  children,
+  likes
 }) => {
   const onehundred = () => {
     switch (tag) {
@@ -239,7 +241,7 @@ const ProfileCard = ({
                 }}
                 fontSize="sm"
                 bold>
-                276
+                {children.length}
               </Text>
             </HStack>
           </Stack>
@@ -287,7 +289,7 @@ const ProfileCard = ({
                   }}
                   fontSize="sm"
                   bold>
-                  10
+                  {likes.length}
                 </Text>
               </HStack>
             </Pressable>

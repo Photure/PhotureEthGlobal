@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useRef, useState, useContext, useEffect} from 'react';
 import {Image, useWindowDimensions, StatusBar, Pressable} from 'react-native';
 import {
   Box,
@@ -18,6 +18,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
+import {PhotoEditorModal} from 'react-native-photoeditorsdk';
 
 import Carousel from 'react-native-snap-carousel';
 
@@ -34,112 +35,16 @@ import {SharedElement} from 'react-navigation-shared-element';
 import ScreenCard from '../../components/Card/ScreenCard';
 
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
-
-const USER_WALLET_ADDRESS = '0xccf3e94792cd0b3484f54e6110ae1b3445a67cc4';
-
-import {PESDK, PhotoEditorModal} from 'react-native-photoeditorsdk';
-import {configuration} from './data';
-
-import {useFeedContext} from '../../contexts/FeedContext';
-
+import { ItemProvider, useItemContext, withItemContext } from '../../contexts/ItemContext';
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
+import { CameraContext } from '../../contexts/CameraContext';
+import { configuration } from './data';
 import PhotoFormModal from '../../components/PhotoFormModal';
-import {CameraContext} from '../../contexts/CameraContext';
-import {AlertModal} from '../../components/AlertDialog';
-import {SuccessModal} from '../../components/SuccessModal';
+import { AlertModal } from '../../components/AlertDialog';
 
-const data = [
-  {
-    id: '81',
-    title: 'Tree Walk',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Nature',
-    imageLink:
-      'https://s3.amazonaws.com/crowdriff-media/mirror/6315b0b40448afe22a7a15f3231b2e4298aa16b334f757e20a089415120eee5a.jpg',
-  },
-  {
-    id: '82',
-    title: 'Square Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
-  },
-  {
-    id: '83',
-    title: 'Whats up?',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Sky',
-    imageLink: 'https://images.wsj.net/im-298298?width=1280&size=1',
-  },
-  {
-    id: '84',
-    title: 'Petal to the City',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Statue',
-    imageLink:
-      'https://res.cloudinary.com/atlanta/images/f_auto,q_auto/v1599799897/newAtlanta.com/hero_outdoors_lg-1/hero_outdoors_lg-1.jpg?_i=AA',
-  },
-  {
-    id: '85',
-    title: 'My Christmas Flower',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Flower',
-    imageLink:
-      'https://www.gardeningknowhow.com/wp-content/uploads/2016/02/poinsettia-outdoors.jpg',
-  },
-  {
-    id: '86',
-    title: 'River Trip',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Water',
-    imageLink:
-      'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-  },
-  {
-    id: '87',
-    title: 'Mountain Trail',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fall',
-    imageLink:
-      'https://bigseventravel.com/wp-content/uploads/2020/06/Screen-Shot-2020-06-24-at-2.51.41-PM.png',
-  },
-  {
-    id: '88',
-    title: 'Fire in the Field',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'Fire',
-    imageLink:
-      'https://assets.newatlas.com/dims4/default/0412114/2147483647/strip/true/crop/2500x1666+0+0/resize/728x485!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F68%2F38%2F1eaf35774e1ab0427ac04a664d65%2Foriginal-2.jpg',
-  },
-  {
-    id: '89',
-    title: 'Port of Pier',
-    walletAddress: '0xccf3...7cC4',
-    date: '0.4 MATIC',
-    tag: 'City',
-    imageLink:
-      'https://i.insider.com/577fc85c88e4a7531b8b6941?width=1136&format=jpeg',
-  },
-  {
-    id: '90',
-    title: 'Cold River',
-    walletAddress: 'Paula Green',
-    date: '15th June 2021',
-    tag: 'Winter',
-    imageLink:
-      'https://cdn.outdoors.org/wp-content/uploads/2021/11/03080225/Maine-Woods-Photo-by-Cait-Bourgault_Photos-93.jpg',
-  },
-];
 
 const ItemDetails = ({navigation, route}) => {
+  const { getParent, getChildren, isLoadingChildren, isLoadingParent, parents, children, handleLikePress} = useItemContext()
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
 
@@ -160,14 +65,52 @@ const ItemDetails = ({navigation, route}) => {
   const {item} = route.params;
   const name = route.name;
 
-  const isYourNFT = USER_WALLET_ADDRESS === item.walletAddress;
+  const wc = useWalletConnect()
+  
+  const USER_WALLET_ADDRESS = wc._accounts[0];
+  const isYourNFT = USER_WALLET_ADDRESS.toLowerCase() === item.walletAddress.toLowerCase();
+
+  console.log('walletAddress!!', USER_WALLET_ADDRESS, item.walletAddress)
 
   const {width, height} = useWindowDimensions('window');
   const isGestureActive = useSharedValue(false);
 
   const scale = useSharedValue(1);
 
-  const hasParent = true;
+  console.log('before hasParent', item)
+
+  const hasParent = !!item.adam || parents[item.id];
+
+  useEffect(()=> {
+    getParent(1)
+    getChildren([1], item.id)
+}, [item.id])
+
+  const transfromParent = (parent) => {
+    return transformItemData([parent])[0]
+  }
+
+  const transformItemData = (arrayOfItems) => {
+    const dataForFlatlist = []
+    console.log('arrayOfItems', arrayOfItems)
+    arrayOfItems.forEach((item,index) => {
+
+      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
+      const {image: imageLink, name: title, tag, children = [], likes = [],} = item.metadata
+
+      dataForFlatlist.push({
+        id,
+        title,
+        walletAddress: walletAddress || '',
+        date,
+        tag: !!tag ? tag : 'Nature',
+        imageLink,
+        children,
+        likes
+      })
+    })
+    return dataForFlatlist
+  }
 
   const {
     handleMint,
@@ -322,6 +265,23 @@ const ItemDetails = ({navigation, route}) => {
 
   const [likePressed, setLikePressed] = React.useState(false);
 
+  console.log('parents, children', parents, children)
+
+  const getKey = () =>{ 
+    let key = 0
+    Object.keys(parents).forEach(i => {
+      console.log('foreach', i, item.id)
+      key = i === item.id && i.toString()
+    })
+    return key
+  }
+  const transformedParent = (getKey() !== 0 && parents[getKey()]) ? transfromParent(parents[getKey()]) : null
+  
+  const transformedChildren = (getKey() !== 0 && children[getKey()]) ? transformItemData(children[getKey()]) : null
+
+  console.log('with key', getKey(), parents[getKey()], children[getKey()])
+  console.log('transformed', transformedChildren, transformedParent)
+
   return (
     <Box
       flex={1}
@@ -400,7 +360,7 @@ const ItemDetails = ({navigation, route}) => {
                             _dark={{
                               c: 'gray.700',
                             }}>
-                            {item.walletAddress}
+                            {`${item.walletAddress.substring(0,4)}...${item.walletAddress.substring(item.walletAddress.length-4,item.walletAddress.length)}`}
                           </Text>
                         </HStack>
                       )}
@@ -484,7 +444,7 @@ const ItemDetails = ({navigation, route}) => {
                             }}
                             fontSize="sm"
                             bold>
-                            276
+                            {children.length > 0 ? children.length : 0}
                           </Text>
                         </HStack>
                       </Stack>
@@ -498,8 +458,10 @@ const ItemDetails = ({navigation, route}) => {
                         } else {
                           if (likePressed) {
                             setLikePressed(false);
+                            handleLikePress(item)
                           } else {
                             setLikePressed(true);
+                            handleLikePress(item)
                           }
                         }
                       }}>
@@ -533,14 +495,24 @@ const ItemDetails = ({navigation, route}) => {
                             }}
                             fontSize="sm"
                             bold>
-                            10
+                            {item.likes.length > 0 ? item.likes.length : 0}
                           </Text>
                         </HStack>
                       </Stack>
                     </Pressable>
                   </SharedElement>
                 </HStack>
-                <Button
+                {isYourNFT ? <Button
+                  onPress={() => console.log('hello world')}
+                  mx={6}
+                  my={4}
+                  borderRadius={10}
+                  colorScheme={twohundred().substr(
+                    0,
+                    twohundred().indexOf('.'),
+                  )}>
+                  Sell
+                </Button> : <Button
                   onPress={() => console.log('hello world')}
                   mx={6}
                   my={4}
@@ -550,7 +522,7 @@ const ItemDetails = ({navigation, route}) => {
                     twohundred().indexOf('.'),
                   )}>
                   BUY
-                </Button>
+                </Button>}
                 <Heading
                   size="lg"
                   textAlign={'center'}
@@ -568,42 +540,45 @@ const ItemDetails = ({navigation, route}) => {
                   with you
                 </Heading>
 
-                {hasParent && (
+                {hasParent && transformedParent && (
                   <Stack mx={6}>
                     <Heading fontWeight="500" size="md">
                       Inspiration
                     </Heading>
                     <ScreenCard
-                      id="100"
-                      title="River Trip"
-                      walletAddress="Paula Green"
-                      date="15th June 2021"
-                      tag="Water"
-                      imageLink="https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg"
+                      {...transformedParent}
+                      // id="100"
+                      // title="River Trip"
+                      // walletAddress="Paula Green"
+                      // date="15th June 2021"
+                      // tag="Water"
+                      // imageLink="https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg"
                       onPress={() => {
                         if (name.includes('ItemDetails')) {
                           if (route.name === 'ItemDetailsOne') {
                             navigation.push('ItemDetails', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...transformedParent
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           } else {
                             navigation.push('ItemDetailsOne', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...transformedParent
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           }
@@ -611,25 +586,27 @@ const ItemDetails = ({navigation, route}) => {
                           if (route.name === 'ProfileItems') {
                             navigation.push('ProfileItems', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...transformedParent
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           } else {
                             navigation.push('ProfileItemsOne', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...transformedParent
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           }
@@ -643,8 +620,9 @@ const ItemDetails = ({navigation, route}) => {
                     Inspired
                   </Heading>
                 </Stack>
+                {transformedChildren && 
                 <Carousel
-                  data={data}
+                  data={transformedChildren}
                   useExperimentalSnap
                   firstItem={1}
                   renderItem={({item: ListItem, index, dataIndex}) => (
@@ -658,25 +636,27 @@ const ItemDetails = ({navigation, route}) => {
                           if (route.name === 'ItemDetailsOne') {
                             navigation.push('ItemDetails', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...item
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           } else {
                             navigation.push('ItemDetailsOne', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...item
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           }
@@ -684,25 +664,27 @@ const ItemDetails = ({navigation, route}) => {
                           if (route.name === 'ProfileItems') {
                             navigation.push('ProfileItems', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...item
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           } else {
                             navigation.push('ProfileItemsOne', {
                               item: {
-                                id: '100',
-                                title: 'River Trip',
-                                walletAddress: '0xccf3...7cC4',
-                                date: '0.4 MATIC',
-                                tag: 'Water',
-                                imageLink:
-                                  'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                ...item
+                                // id: '100',
+                                // title: 'River Trip',
+                                // walletAddress: '0xccf3...7cC4',
+                                // date: '0.4 MATIC',
+                                // tag: 'Water',
+                                // imageLink:
+                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
                               },
                             });
                           }
@@ -713,6 +695,7 @@ const ItemDetails = ({navigation, route}) => {
                   sliderWidth={width - 16}
                   itemWidth={width / 2}
                 />
+              }
 
                 <Box my={10} />
               </VStack>
@@ -720,22 +703,22 @@ const ItemDetails = ({navigation, route}) => {
           </NativeViewGestureHandler>
         </Animated.View>
       </PanGestureHandler>
-      <PhotoFormModal
+      {showModal && <PhotoFormModal
         setFormValues={setFormValues}
         handleMint={handleMint}
         showModal={showModal}
         setShowModal={setShowModal}
         filePath={previewImageURI}
         formValues={formValues}
-        remixedItem={null}
-      />
+        remixedItem={item}
+      />}
       {errorCode !== null && errorCode >= 0 && (
         <AlertModal
           errorCode={errorCode}
           handleRetry={handleRetry}
           filePath={previewImageURI}
           formValues={formValues}
-          remixedItem={null}
+          remixedItem={item}
         />
       )}
       {!!transactionHash && (
@@ -763,4 +746,4 @@ const ItemDetails = ({navigation, route}) => {
     </Box>
   );
 };
-export default ItemDetails;
+export default withItemContext(ItemDetails) ;
