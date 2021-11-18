@@ -216,22 +216,22 @@ export const FeedProvider = (props: {children: React.ReactNode}): any => {
               token_id,
               amount,
             });
-        // } else if(token_uri) {
-        //   const data = async ()=> await fetch(token_uri, {
-        //       method: 'GET'
-        //         }).then(async response => {
-        //         const jsonResponse = await response.json()
-        //         console.log('rawData get', jsonResponse)
-        //         return Promise.resolve(jsonResponse)
-        //         })
-        //     nftArray.push({
-        //         metaData: await data(),
-        //         token_uri,
-        //         token_address,
-        //         owner_of,
-        //         token_id,
-        //         amount
-        //     })
+        } else if(token_uri) {
+          const data = async ()=> await fetch(token_uri, {
+              method: 'GET'
+                }).then(async response => {
+                const jsonResponse = await response.json()
+                console.log('rawData get', jsonResponse)
+                return Promise.resolve(jsonResponse)
+                })
+            nftArray.push({
+                metadata: await data(),
+                token_uri,
+                token_address,
+                owner_of,
+                token_id,
+                amount
+            })
         }
     };
     return nftArray;

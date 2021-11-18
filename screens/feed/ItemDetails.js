@@ -177,11 +177,11 @@ const ItemDetails = ({navigation, route}) => {
         return 'blue.100';
       case 'Fall':
         return 'orange.100';
-      case 'Fire':
+      case 'Meme':
         return 'red.100';
       case 'Landmarks':
         return 'purple.100';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.100';
     }
   };
@@ -192,7 +192,7 @@ const ItemDetails = ({navigation, route}) => {
         return 'green.200';
       case 'Flower':
         return 'rose.200';
-      case 'Sky':
+      case 'Style':
         return 'lightBlue.200';
       case 'Statue':
         return 'muted.200';
@@ -200,11 +200,11 @@ const ItemDetails = ({navigation, route}) => {
         return 'blue.200';
       case 'Fall':
         return 'orange.200';
-      case 'Fire':
+      case 'Meme':
         return 'red.200';
       case 'Landmarks':
         return 'purple.200';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.200';
     }
   };
@@ -223,11 +223,11 @@ const ItemDetails = ({navigation, route}) => {
         return 'blue.500';
       case 'Fall':
         return 'orange.500';
-      case 'Fire':
+      case 'Meme':
         return 'red.500';
       case 'Landmarks':
         return 'purple.500';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.500';
     }
   };
@@ -246,11 +246,11 @@ const ItemDetails = ({navigation, route}) => {
         return 'blue.700';
       case 'Fall':
         return 'orange.700';
-      case 'Fire':
+      case 'Meme':
         return 'red.700';
       case 'Landmarks':
         return 'purple.700';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.700';
     }
   };

@@ -79,7 +79,7 @@ const Card = ({
         return 'green.100';
       case 'Flower':
         return 'rose.100';
-      case 'Sky':
+      case 'Style':
         return 'lightBlue.100';
       case 'Statue':
         return 'muted.100';
@@ -87,11 +87,11 @@ const Card = ({
         return 'blue.100';
       case 'Fall':
         return 'orange.100';
-      case 'Fire':
+      case 'Meme':
         return 'red.100';
       case 'City':
         return 'purple.100';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.100';
     }
   };
@@ -102,7 +102,7 @@ const Card = ({
         return 'green.200';
       case 'Flower':
         return 'rose.200';
-      case 'Sky':
+      case 'Style':
         return 'lightBlue.200';
       case 'Statue':
         return 'muted.200';
@@ -110,11 +110,11 @@ const Card = ({
         return 'blue.200';
       case 'Fall':
         return 'orange.200';
-      case 'Fire':
+      case 'Meme':
         return 'red.200';
       case 'City':
         return 'purple.200';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.200';
     }
   };
@@ -125,7 +125,7 @@ const Card = ({
         return 'green.500';
       case 'Flower':
         return 'rose.500';
-      case 'Sky':
+      case 'Style':
         return 'lightBlue.500';
       case 'Statue':
         return 'muted.500';
@@ -133,11 +133,11 @@ const Card = ({
         return 'blue.500';
       case 'Fall':
         return 'orange.500';
-      case 'Fire':
+      case 'Meme':
         return 'red.500';
       case 'City':
         return 'purple.500';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.500';
     }
   };
@@ -148,7 +148,7 @@ const Card = ({
         return 'green.700';
       case 'Flower':
         return 'rose.700';
-      case 'Sky':
+      case 'Style':
         return 'lightBlue.700';
       case 'Statue':
         return 'muted.700';
@@ -156,11 +156,11 @@ const Card = ({
         return 'blue.700';
       case 'Fall':
         return 'orange.700';
-      case 'Fire':
+      case 'Meme':
         return 'red.700';
       case 'City':
         return 'purple.700';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.700';
     }
   };

@@ -49,11 +49,11 @@ const ScreenCard = ({
         return 'blue.100';
       case 'Fall':
         return 'orange.100';
-      case 'Fire':
+      case 'Meme':
         return 'red.100';
       case 'City':
         return 'purple.100';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.100';
     }
   };
@@ -72,11 +72,11 @@ const ScreenCard = ({
         return 'blue.200';
       case 'Fall':
         return 'orange.200';
-      case 'Fire':
+      case 'Meme':
         return 'red.200';
       case 'City':
         return 'purple.200';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.200';
     }
   };
@@ -95,11 +95,11 @@ const ScreenCard = ({
         return 'blue.500';
       case 'Fall':
         return 'orange.500';
-      case 'Fire':
+      case 'Meme':
         return 'red.500';
       case 'City':
         return 'purple.500';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.500';
     }
   };
@@ -118,11 +118,11 @@ const ScreenCard = ({
         return 'blue.700';
       case 'Fall':
         return 'orange.700';
-      case 'Fire':
+      case 'Meme':
         return 'red.700';
       case 'City':
         return 'purple.700';
-      case 'Winter':
+      case 'Art':
         return 'blueGray.700';
     }
   };

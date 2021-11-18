@@ -163,9 +163,10 @@ export default function FeedScreen({navigation}) {
     console.log('feedDataInTransform', feedData)
     const dataForFlatlist = []
     feedData.forEach((item,index) => {
-      console.log('need to grab everything off Item', item)
+      console.log('need to grab everything off Item', item.metadata)
+      
       const { token_id: id, owner_of: walletAddress = '', price: date  } = item
-      const {image: imageLink, name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
+      const {image: imageLink = 'https://via.placeholder.com/150', name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
 
       dataForFlatlist.push({
         id,
