@@ -93,6 +93,8 @@ const ProfileScreen = ({navigation, route}) => {
         }
         title={`0xccf3...7cC4`}
         walletAddress={wc.accounts[0]}
+        leftTopIcon={require('../../icons/faucet.png')}
+        rightTopIcon={require('../../icons/cog.png')}
         backgroundColor="#4e36c6"
         parallaxHeight={responsiveHeight(28)}
         subtitle={`${transformProfileData().length} Creations`}>
