@@ -266,10 +266,12 @@ export default function FeedScreen({navigation}) {
                 <Card
                   {...item}
                   y={yOne}
+                  sharedElementIdSuffix={'one'}
                   index={index}
                   onPress={() => {
                     navigation.push('ItemDetails', {
                       item,
+                      sharedElementIdSuffix: 'one'
                     });
                     StatusBar.setHidden(true, 'slide');
                   }}
@@ -314,11 +316,13 @@ export default function FeedScreen({navigation}) {
               renderItem={({item, index}) => (
                 <Card
                   {...item}
+                  sharedElementIdSuffix={'two'}
                   y={yTwo}
                   index={index}
                   onPress={() => {
                     navigation.push('ItemDetails', {
                       item,
+                      sharedElementIdSuffix: 'two'
                     });
                     StatusBar.setHidden(true, 'slide');
                   }}
@@ -364,9 +368,11 @@ export default function FeedScreen({navigation}) {
                   {...item}
                   y={yThree}
                   index={index}
+                  sharedElementIdSuffix={'three'}
                   onPress={() => {
                     navigation.push('ItemDetails', {
                       item,
+                      sharedElementIdSuffix: 'three'
                     });
                     StatusBar.setHidden(true, 'slide');
                   }}

@@ -36,7 +36,8 @@ const ProfileCard = ({
   containerWidth,
   isFromDetails,
   children,
-  likes
+  likes,
+  sharedElementIdSuffix
 }) => {
   const onehundred = () => {
     switch (tag) {
@@ -175,7 +176,7 @@ const ProfileCard = ({
         borderRadius={10}>
         <TapGestureHandler onGestureEvent={eventHandler}>
           <Animated.View>
-            <SharedElement id={`item.${id}.photo`}>
+            <SharedElement id={`item.${id}.photo.${sharedElementIdSuffix}`}>
               <Image
                 source={{
                   uri: imageLink,
@@ -191,7 +192,7 @@ const ProfileCard = ({
           </Animated.View>
         </TapGestureHandler>
         <SharedElement
-          id={`item.${id}.tag`}
+          id={`item.${id}.tag.${sharedElementIdSuffix}`}
           style={{position: 'absolute', left: '5%', top: '20%'}}>
           <Stack
             p={1}
@@ -218,7 +219,7 @@ const ProfileCard = ({
           </Stack>
         </SharedElement>
         <SharedElement
-          id={`item.${id}.edit`}
+          id={`item.${id}.edit.${sharedElementIdSuffix}`}
           style={{position: 'absolute', left: '5%', top: '5%'}}>
           <Stack
             p={1}
@@ -247,7 +248,7 @@ const ProfileCard = ({
           </Stack>
         </SharedElement>
         <SharedElement
-          id={`item.${id}.like`}
+          id={`item.${id}.like.${sharedElementIdSuffix}`}
           style={{position: 'absolute', right: 0, top: '5%'}}>
           <Stack
             p={1}
@@ -297,7 +298,7 @@ const ProfileCard = ({
         </SharedElement>
         <TapGestureHandler onGestureEvent={eventHandler}>
           <Animated.View>
-            <SharedElement id={`item.${id}.card`}>
+            <SharedElement id={`item.${id}.card.${sharedElementIdSuffix}`}>
               <Stack
                 p={4}
                 position="absolute"

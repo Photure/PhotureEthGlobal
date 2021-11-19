@@ -28,35 +28,35 @@ export const ProfileStack = () => (
           };
         }}
         sharedElements={(route, otherRoute, showing) => {
-          const {item} = route.params;
+          const {item, sharedElementIdSuffix} = route.params;
           return [
             {
-              id: `item.${item.id}.photo`,
+              id: `item.${item.id}.photo.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'auto',
             },
             {
-              id: `item.${item.id}.card`,
+              id: `item.${item.id}.card.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'none',
             },
             {
-              id: `item.${item.id}.tag`,
+              id: `item.${item.id}.tag.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.like`,
+              id: `item.${item.id}.like.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.edit`,
+              id: `item.${item.id}.edit.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.avatar`,
+              id: `item.${item.id}.avatar.${sharedElementIdSuffix}`,
             },
           ];
         }}
@@ -73,35 +73,35 @@ export const ProfileStack = () => (
           };
         }}
         sharedElements={(route, otherRoute, showing) => {
-          const {item} = route.params;
+          const {item, sharedElementIdSuffix} = route.params;
           return [
             {
-              id: `item.${item.id}.photo`,
+              id: `item.${item.id}.photo.${sharedElementIdSuffix}`,
               animation: 'move',
               resize: 'auto',
             },
             {
-              id: `item.${item.id}.card`,
+              id: `item.${item.id}.card.${sharedElementIdSuffix}`,
               animation: 'fade',
               resize: 'none',
             },
             {
-              id: `item.${item.id}.tag`,
+              id: `item.${item.id}.tag.${sharedElementIdSuffix}`,
               animation: 'move',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.like`,
+              id: `item.${item.id}.like.${sharedElementIdSuffix}`,
               animation: 'move',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.edit`,
+              id: `item.${item.id}.edit.${sharedElementIdSuffix}`,
               animation: 'move',
               resize: 'scale',
             },
             {
-              id: `item.${item.id}.avatar`,
+              id: `item.${item.id}.avatar.${sharedElementIdSuffix}`,
             },
           ];
         }}

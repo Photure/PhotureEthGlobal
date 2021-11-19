@@ -159,7 +159,7 @@ const ScreenCard = ({
         <Box my={4} overflow="hidden" width="100%" shadow={2} borderRadius={10}>
           <TapGestureHandler onGestureEvent={eventHandler}>
             <Animated.View>
-              <SharedElement id={`item.${id}.photo`}>
+              <SharedElement id={`item.${id}.photo.${rest.sharedElementIdSuffix}`}>
                 <Image
                   ref={useRef(null)}
                   source={{
@@ -176,7 +176,7 @@ const ScreenCard = ({
             </Animated.View>
           </TapGestureHandler>
           <SharedElement
-            id={`item.${id}.like`}
+            id={`item.${id}.like.${rest.sharedElementIdSuffix}`}
             style={{position: 'absolute', right: '25%'}}>
             <CardButton
               value={rest.likes.length}
@@ -186,7 +186,7 @@ const ScreenCard = ({
             />
           </SharedElement>
           <SharedElement
-            id={`item.${id}.edit`}
+            id={`item.${id}.edit.${rest.sharedElementIdSuffix}`}
             style={{position: 'absolute', left: '5%'}}>
             <CardButton
               value={rest.children.length}
@@ -195,7 +195,7 @@ const ScreenCard = ({
               fivehundred={fivehundred}
             />
           </SharedElement>
-          <SharedElement id={`item.${id}.tag`}>
+          <SharedElement id={`item.${id}.tag.${rest.sharedElementIdSuffix}`}>
             <Label
               text={tag}
               onehundred={onehundred}
@@ -206,7 +206,7 @@ const ScreenCard = ({
           </SharedElement>
           <TapGestureHandler onGestureEvent={eventHandler}>
             <Animated.View>
-              <SharedElement id={`item.${id}.card`}>
+              <SharedElement id={`item.${id}.card.${rest.sharedElementIdSuffix}`}>
                 <CardInfo
                   title={title}
                   walletAddress={walletAddress}

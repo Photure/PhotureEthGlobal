@@ -62,7 +62,7 @@ const ItemDetails = ({navigation, route}) => {
     tag: '',
   });
 
-  const {item} = route.params;
+  const {item, sharedElementIdSuffix} = route.params;
   const name = route.name;
 
   const wc = useWalletConnect()
@@ -307,7 +307,7 @@ const ItemDetails = ({navigation, route}) => {
               showsVerticalScrollIndicator={false}
               onScrollBeginDrag={this.onRegisterLastScroll}
               scrollEventThrottle={1}>
-              <SharedElement id={`item.${item.id}.photo`}>
+              <SharedElement id={`item.${item.id}.photo.${sharedElementIdSuffix}`}>
                 <Image
                   source={{
                     uri: item.imageLink,
@@ -328,7 +328,7 @@ const ItemDetails = ({navigation, route}) => {
                 _dark={{
                   bg: 'gray.800',
                 }}>
-                <SharedElement id={`item.${item.id}.card`}>
+                <SharedElement id={`item.${item.id}.card.${sharedElementIdSuffix}`}>
                   <Stack
                     p={4}
                     mx={6}
@@ -345,7 +345,7 @@ const ItemDetails = ({navigation, route}) => {
                     <Stack space={1} shadow={2}>
                       {!isYourNFT && (
                         <HStack space={1} size="sm" alignItems="center">
-                          <SharedElement id={`item.${item.id}.avatar`}>
+                          <SharedElement id={`item.${item.id}.avatar.${sharedElementIdSuffix}`}>
                             <Avatar
                               size="sm"
                               source={require('../../avatar.png')}
@@ -388,7 +388,7 @@ const ItemDetails = ({navigation, route}) => {
                   </Stack>
                 </SharedElement>
                 <HStack mx={6} alignItems="center">
-                  <SharedElement id={`item.${item.id}.tag`}>
+                  <SharedElement id={`item.${item.id}.tag.${sharedElementIdSuffix}`}>
                     <Stack
                       p={1}
                       mr={2}
@@ -413,7 +413,7 @@ const ItemDetails = ({navigation, route}) => {
                       </Badge>
                     </Stack>
                   </SharedElement>
-                  <SharedElement id={`item.${item.id}.edit`}>
+                  <SharedElement id={`item.${item.id}.edit.${sharedElementIdSuffix}`}>
                     <Pressable
                       onPress={() => {
                         setShowPreview(true);
@@ -450,7 +450,7 @@ const ItemDetails = ({navigation, route}) => {
                       </Stack>
                     </Pressable>
                   </SharedElement>
-                  <SharedElement id={`item.${item.id}.like`}>
+                  <SharedElement id={`item.${item.id}.like.${sharedElementIdSuffix}`}>
                     <Pressable
                       onPress={() => {
                         if (item.type === 'edit') {
@@ -628,6 +628,7 @@ const ItemDetails = ({navigation, route}) => {
                   renderItem={({item: ListItem, index, dataIndex}) => (
                     <ProfileCard
                       {...ListItem}
+                      sharedElementIdSuffix={'carousel'}
                       index={dataIndex}
                       containerWidth={width / 2}
                       isFromDetails

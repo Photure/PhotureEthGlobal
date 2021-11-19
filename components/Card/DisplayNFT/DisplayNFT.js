@@ -5,7 +5,7 @@ import {SharedElement} from 'react-navigation-shared-element';
 const DisplayNFT = (id, preview) => {
   const {width} = useWindowDimensions('screen');
   return (
-    <SharedElement id={`item.${id}.photo`}>
+    <SharedElement id={`item.${id}.photo.${sharedElementIdSuffix}`}>
       <Image
         source={{
           uri: 'https://www.thisiscolossal.com/wp-content/uploads/2016/07/flower-1.jpg',
