@@ -2,11 +2,30 @@ import React, {useState} from 'react';
 import {Modal, Button, FormControl, Stack, Input} from 'native-base';
 
 export default function SellModal({showModal, setShowModal, onPress}) {
-  const [salePrice, setSalePrice] = useState(false);
+  const [salePrice, setSalePrice] = useState('');
   const [errors, setErrors] = React.useState({
     hasError: false,
     message: '',
   });
+
+  const validate = () => {
+    const decimal = salePrice.substr(salePrice.indexOf('.'));
+
+    if (salePrice === undefined) {
+      setErrors({
+        hasError: true,
+        message: 'Sale Price is Required',
+      });
+      return false;
+    } else if (decimal.length > 3) {
+      setErrors({
+        hasError: true,
+        message: 'Sale Price can only have two decimal values',
+      });
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -14,20 +33,15 @@ export default function SellModal({showModal, setShowModal, onPress}) {
         <Modal.CloseButton />
         <Modal.Header>Sell NFT</Modal.Header>
         <Modal.Body>
-          <Stack py={4}>
-            <FormControl
-              isRequired /* isInvalid={()=> doesKeyHaveError('name') }*/
-            >
-              <FormControl.Label>Name</FormControl.Label>
-              <Input onChangeText={value => setSalePrice(value)} />
-              {errors.hasError ? (
-                <FormControl.ErrorMessage
-                  _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>
-                  {errors.message}
-                </FormControl.ErrorMessage>
-              ) : null}
-            </FormControl>
-          </Stack>
+          <FormControl isRequired isInvalid={'message' in errors}>
+            <FormControl.Label>Price in MATIC</FormControl.Label>
+            <Input onChangeText={value => setSalePrice(value)} />
+
+            <FormControl.ErrorMessage
+              _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>
+              {errors.message}
+            </FormControl.ErrorMessage>
+          </FormControl>
         </Modal.Body>
         <Modal.Footer>
           <Button.Group space={2}>
@@ -42,9 +56,11 @@ export default function SellModal({showModal, setShowModal, onPress}) {
             </Button>
             <Button
               onPress={() => {
-                setShowModal(false);
+                if (validate()) {
+                  setShowModal(false);
+                }
               }}>
-              Complete Purchase
+              List NFT
             </Button>
           </Button.Group>
         </Modal.Footer>

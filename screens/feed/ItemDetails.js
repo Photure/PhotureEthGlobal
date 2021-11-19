@@ -46,6 +46,7 @@ import {configuration} from './data';
 import PhotoFormModal from '../../components/PhotoFormModal';
 import {AlertModal} from '../../components/AlertDialog';
 import BuyModal from '../../components/BuyModal';
+import SellModal from '../../components/SellModal';
 import SuccessModal from '../../components/SuccessModal';
 
 const ItemDetails = ({navigation, route}) => {
@@ -63,6 +64,7 @@ const ItemDetails = ({navigation, route}) => {
 
   const [showModal, setShowModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
+  const [showSellModal, setShowSellModal] = useState(false);
 
   const [previewImageURI, setPreviewImageURI] = useState(
     'https://via.placeholder.com/150',
@@ -542,7 +544,7 @@ const ItemDetails = ({navigation, route}) => {
                 </HStack>
                 {isYourNFT ? (
                   <Button
-                    onPress={() => console.log('hello world')}
+                    onPress={() => setShowSellModal(true)}
                     mx={6}
                     my={4}
                     borderRadius={10}
@@ -745,23 +747,19 @@ const ItemDetails = ({navigation, route}) => {
           </NativeViewGestureHandler>
         </Animated.View>
       </PanGestureHandler>
+      {showSellModal && (
+        <SellModal
+          showModal={showSellModal}
+          setShowModal={setShowSellModal}
+          onPress={() => console.log('test')}
+        />
+      )}
       {showBuyModal && (
         <BuyModal
           showModal={showBuyModal}
           setShowModal={setShowBuyModal}
           price={0.01}
           onPress={() => console.log('test')}
-        />
-      )}
-      {showModal && (
-        <PhotoFormModal
-          setFormValues={setFormValues}
-          handleMint={handleMint}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          filePath={previewImageURI}
-          formValues={formValues}
-          remixedItem={item}
         />
       )}
       {showModal && (
