@@ -17,8 +17,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {TapGestureHandler} from 'react-native-gesture-handler';
-import { withItemContext, useItemContext } from '../../contexts/ItemContext';
-import { useWalletConnect } from '@walletconnect/react-native-dapp';
+import {withItemContext, useItemContext} from '../../contexts/ItemContext';
+import {useWalletConnect} from '@walletconnect/react-native-dapp';
 
 const DEFAULT_CARD_HEIGHT = wHeight / 3 + 50;
 
@@ -44,7 +44,7 @@ const Card = ({
   children = [],
   adam,
   file_type,
-  sharedElementIdSuffix
+  sharedElementIdSuffix,
 }) => {
   const wholeItem = {
     id,
@@ -62,12 +62,12 @@ const Card = ({
     parent,
     children,
     adam,
-    file_type
-  }
-  console.log('likesCard',likes)
-  const wc = useWalletConnect()
-  const usersWalletAddress = wc._accounts[0]
-  const { handleLikePress } = useItemContext()
+    file_type,
+  };
+  console.log('likesCard', likes);
+  const wc = useWalletConnect();
+  const usersWalletAddress = wc._accounts[0];
+  const {handleLikePress} = useItemContext();
   const position = RNAnimate.subtract(index * CARD_HEIGHT, y);
   const isDisappearing = -CARD_HEIGHT;
   const isTop = 0;
@@ -227,7 +227,7 @@ const Card = ({
         <Box my={4} overflow="hidden" width="100%" shadow={2} borderRadius={10}>
           <TapGestureHandler onGestureEvent={eventHandler}>
             <Animated.View>
-              <SharedElement id={`item.${id}.photo.${sharedElementIdSuffix}.${sharedElementIdSuffix}`}>
+              <SharedElement id={`item.${id}.photo.${sharedElementIdSuffix}`}>
                 <Image
                   ref={useRef(null)}
                   source={{

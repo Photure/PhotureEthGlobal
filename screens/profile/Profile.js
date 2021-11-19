@@ -1,7 +1,8 @@
-import React, {useContext} from 'react';
-import StickyParallaxHeader from 'react-native-sticky-parallax-header';
+import React, {useContext, useEffect} from 'react';
+import StickyParallaxHeader from '../../components/react-native-sticky-parallax-header';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import {StatusBar, Dimensions} from 'react-native';
 import {useTheme, useColorMode, View, FlatList} from 'native-base';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
@@ -16,13 +17,36 @@ const containerWidth = width - 64;
 const ProfileScreen = ({navigation, route}) => {
   const {galleryData} = useContext(ProfileContext);
   const {colorMode} = useColorMode();
+  const wc = useWalletConnect();
   const {colors} = useTheme();
 
+  useEffect(() => {
+    if (
+      (!wc.connected && wc?.connect) ||
+      (!wc?.session?.connected && wc?.connect)
+    ) {
+      wc.connect({
+        chainId: 137,
+      });
+    }
+  }, [wc.connected]);
+
   const transformProfileData = () => {
-    const dataForFlatlist = []
-    galleryData.forEach((item,index) => {
-      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
-      const {image: imageLink, name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
+    const dataForFlatlist = [];
+    galleryData.forEach((item, index) => {
+      const {token_id: id, owner_of: walletAddress = '', price: date} = item;
+      const {
+        image: imageLink,
+        name: title,
+        tag,
+        children = [],
+        likes = [],
+        description,
+        timestamp,
+        parent,
+        adam,
+        file_type,
+      } = item.metadata;
 
       dataForFlatlist.push({
         id,
@@ -37,11 +61,11 @@ const ProfileScreen = ({navigation, route}) => {
         timestamp,
         parent,
         adam,
-        file_type
-      })
-    })
-    return dataForFlatlist
-  }
+        file_type,
+      });
+    });
+    return dataForFlatlist;
+  };
 
   return (
     <SafeAreaView
@@ -64,8 +88,11 @@ const ProfileScreen = ({navigation, route}) => {
       <StickyParallaxHeader
         bounces={false}
         headerType="AvatarHeader"
-        image={require('../../avatar.png')}
+        image={
+          'https://avatars.dicebear.com/api/pixel-art/${walletAddress}.svg'
+        }
         title={`0xccf3...7cC4`}
+        walletAddress={wc.accounts[0]}
         backgroundColor="#4e36c6"
         parallaxHeight={responsiveHeight(28)}
         subtitle={`${transformProfileData().length} Creations`}>

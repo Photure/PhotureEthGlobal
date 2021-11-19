@@ -35,6 +35,9 @@ import {SharedElement} from 'react-navigation-shared-element';
 import ScreenCard from '../../components/Card/ScreenCard';
 
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
+
+import {SvgUri} from 'react-native-svg';
+
 import {
   ItemProvider,
   useItemContext,
@@ -62,7 +65,7 @@ const ItemDetails = ({navigation, route}) => {
     getUSDConversion,
     buyNFT,
     clearTransactionHashItem,
-    transactionHashItem
+    transactionHashItem,
   } = useItemContext();
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
@@ -98,28 +101,28 @@ const ItemDetails = ({navigation, route}) => {
   const isGestureActive = useSharedValue(false);
 
   const scale = useSharedValue(1);
-  let priceInUSD = 0
-  useEffect(()=> {
+  let priceInUSD = 0;
+  useEffect(() => {
     (async () => {
-      priceInUSD = await getUSDConversion(item.isItemForSale.price)
-    })()
-  }, [item.id])
+      priceInUSD = await getUSDConversion(item.isItemForSale.price);
+    })();
+  }, [item.id]);
 
-  console.log('before hasParent', parents[item.id], item.id, parents)
+  console.log('before hasParent', parents[item.id], item.id, parents);
 
   const hasParent = parents[item.id];
 
-  useEffect(()=> {
+  useEffect(() => {
     // Also interact with Market contract to see if item on sale
     // Interact with social contract to get parent and children. Parent will be on metadata.
 
-    getParent(item.parent, item.id)
-    getChildren([1], item.id)
-}, [item.id])
+    getParent(item.parent, item.id);
+    getChildren([1], item.id);
+  }, [item.id]);
 
-  const transfromParent = (parent) => {
-    return transformItemData([parent])[0]
-  }
+  const transfromParent = parent => {
+    return transformItemData([parent])[0];
+  };
 
   const transformItemData = arrayOfItems => {
     const dataForFlatlist = [];
@@ -389,14 +392,11 @@ const ItemDetails = ({navigation, route}) => {
                     <Stack space={1} shadow={2}>
                       {!isYourNFT && (
                         <HStack space={1} size="sm" alignItems="center">
-                          <SharedElement
-                            id={`item.${item.id}.avatar.${sharedElementIdSuffix}`}>
-                            <Avatar
-                              size="sm"
-                              source={require('../../avatar.png')}
-                              style={{opacity: 1}}
-                            />
-                          </SharedElement>
+                          <SvgUri
+                            width="30"
+                            height="30"
+                            uri={`https://avatars.dicebear.com/api/pixel-art/${item.walletAddress}.svg`}
+                          />
                           <Text
                             fontSize="sm"
                             _light={{
@@ -765,7 +765,7 @@ const ItemDetails = ({navigation, route}) => {
         <SellModal
           showModal={showSellModal}
           setShowModal={setShowSellModal}
-          onPress={(price) => sellNFT(item.id, price, item.adam)}
+          onPress={price => sellNFT(item.id, price, item.adam)}
           getUSDConversion={getUSDConversion}
         />
       )}
@@ -776,7 +776,6 @@ const ItemDetails = ({navigation, route}) => {
           priceInMatic={item.isItemForSale.priceInMatic}
           priceUSD={priceInUSD}
           onPress={() => buyNFT(item.isItemForSale)}
-          
         />
       )}
       {showModal && (
@@ -799,11 +798,18 @@ const ItemDetails = ({navigation, route}) => {
           remixedItem={item}
         />
       )}
-      {!!transactionHash || !!transactionHashItem && (
-        <SuccessModal
-          clearTransactionHash={!!transactionHash ? clearTransactionHash : clearTransactionHashItem}
-          transactionHash={!!transactionHash ? transactionHash: transactionHashItem}></SuccessModal>
-      )}
+      {!!transactionHash ||
+        (!!transactionHashItem && (
+          <SuccessModal
+            clearTransactionHash={
+              !!transactionHash
+                ? clearTransactionHash
+                : clearTransactionHashItem
+            }
+            transactionHash={
+              !!transactionHash ? transactionHash : transactionHashItem
+            }></SuccessModal>
+        ))}
       <PhotoEditorModal
         image={{uri: previewImageURI}}
         onExport={photoEditorResult => {

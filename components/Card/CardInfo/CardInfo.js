@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Stack, HStack, Avatar, Text} from 'native-base';
 import {SharedElement} from 'react-navigation-shared-element';
+
+import {SvgUri} from 'react-native-svg';
 
 const CardInfo = ({walletAddress, title, date, id}) => {
   return (
@@ -21,13 +23,11 @@ const CardInfo = ({walletAddress, title, date, id}) => {
       }}>
       <Stack space={1} shadow={2}>
         <HStack space={1} size="sm" alignItems="center">
-          <SharedElement id={`item.${id}.avatar`}>
-            <Avatar
-              size="sm"
-              source={require('../../../avatar.png')}
-              opacity={100}
-            />
-          </SharedElement>
+          <SvgUri
+            width="30"
+            height="30"
+            uri={`https://avatars.dicebear.com/api/pixel-art/${walletAddress}.svg`}
+          />
           <Text
             fontSize="sm"
             opacity={100}
@@ -39,7 +39,10 @@ const CardInfo = ({walletAddress, title, date, id}) => {
               c: 'gray.700',
               opacity: 1,
             }}>
-            {`${walletAddress.substring(0,4)}...${walletAddress.substring(walletAddress.length-4,walletAddress.length)}`}
+            {`${walletAddress.substring(0, 4)}...${walletAddress.substring(
+              walletAddress.length - 4,
+              walletAddress.length,
+            )}`}
           </Text>
         </HStack>
         <Text

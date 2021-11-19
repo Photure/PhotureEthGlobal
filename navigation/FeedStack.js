@@ -53,9 +53,6 @@ export const FeedStack = () => (
             animation: 'fade',
             resize: 'scale',
           },
-          {
-            id: `item.${item.id}.avatar.${sharedElementIdSuffix}`,
-          },
         ];
       }}
     />
@@ -97,9 +94,6 @@ export const FeedStack = () => (
             id: `item.${item.id}.edit.${sharedElementIdSuffix}`,
             animation: 'move',
             resize: 'scale',
-          },
-          {
-            id: `item.${item.id}.avatar.${sharedElementIdSuffix}`,
           },
         ];
       }}
