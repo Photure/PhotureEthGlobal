@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button, Text, Stack} from 'native-base';
 
-export default function BuyModal({showModal, setShowModal, price, onPress}) {
+export default function BuyModal({showModal, setShowModal, priceInMatic, onPress, priceUSD}) {
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
       <Modal.Content maxWidth="400px">
@@ -9,8 +9,8 @@ export default function BuyModal({showModal, setShowModal, price, onPress}) {
         <Modal.Header>Buy NFT</Modal.Header>
         <Modal.Body>
           <Stack py={4}>
-            <Text textAlign="center">{`${price} MATIC`}</Text>
-            <Text textAlign="center">{`${price} USD`}</Text>
+            <Text textAlign="center">{`${priceInMatic} MATIC`}</Text>
+            <Text textAlign="center">{`${priceUSD === 0 ? `< 0.00`: priceUSD} USD`}</Text>
           </Stack>
         </Modal.Body>
         <Modal.Footer>
@@ -26,6 +26,7 @@ export default function BuyModal({showModal, setShowModal, price, onPress}) {
             </Button>
             <Button
               onPress={() => {
+                onPress()
                 setShowModal(false);
               }}>
               Complete Purchase

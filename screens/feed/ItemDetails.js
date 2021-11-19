@@ -58,6 +58,11 @@ const ItemDetails = ({navigation, route}) => {
     parents,
     children,
     handleLikePress,
+    sellNFT,
+    getUSDConversion,
+    buyNFT,
+    clearTransactionHashItem,
+    transactionHashItem
   } = useItemContext();
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
@@ -93,19 +98,28 @@ const ItemDetails = ({navigation, route}) => {
   const isGestureActive = useSharedValue(false);
 
   const scale = useSharedValue(1);
+  let priceInUSD = 0
+  useEffect(()=> {
+    (async () => {
+      priceInUSD = await getUSDConversion(item.isItemForSale.price)
+    })()
+  }, [item.id])
 
-  console.log('before hasParent', item);
+  console.log('before hasParent', parents[item.id], item.id, parents)
 
-  const hasParent = !!item.adam || parents[item.id];
+  const hasParent = parents[item.id];
 
-  useEffect(() => {
-    getParent(1);
-    getChildren([1], item.id);
-  }, [item.id]);
+  useEffect(()=> {
+    // Also interact with Market contract to see if item on sale
+    // Interact with social contract to get parent and children. Parent will be on metadata.
 
-  const transfromParent = parent => {
-    return transformItemData([parent])[0];
-  };
+    getParent(item.parent, item.id)
+    getChildren([1], item.id)
+}, [item.id])
+
+  const transfromParent = (parent) => {
+    return transformItemData([parent])[0]
+  }
 
   const transformItemData = arrayOfItems => {
     const dataForFlatlist = [];
@@ -309,7 +323,7 @@ const ItemDetails = ({navigation, route}) => {
 
   console.log('with key', getKey(), parents[getKey()], children[getKey()]);
   console.log('transformed', transformedChildren, transformedParent);
-  console.log('*****************', item.id);
+  console.log('*****************', item);
   return (
     <Box
       flex={1}
@@ -564,7 +578,7 @@ const ItemDetails = ({navigation, route}) => {
                       0,
                       twohundred().indexOf('.'),
                     )}>
-                    BUY
+                    {item.isItemForSale ? 'BUY' : 'REQUEST'}
                   </Button>
                 )}
                 <Heading
@@ -751,15 +765,18 @@ const ItemDetails = ({navigation, route}) => {
         <SellModal
           showModal={showSellModal}
           setShowModal={setShowSellModal}
-          onPress={() => console.log('test')}
+          onPress={(price) => sellNFT(item.id, price, item.adam)}
+          getUSDConversion={getUSDConversion}
         />
       )}
       {showBuyModal && (
         <BuyModal
           showModal={showBuyModal}
           setShowModal={setShowBuyModal}
-          price={0.01}
-          onPress={() => console.log('test')}
+          priceInMatic={item.isItemForSale.priceInMatic}
+          priceUSD={priceInUSD}
+          onPress={() => buyNFT(item.isItemForSale)}
+          
         />
       )}
       {showModal && (
@@ -782,10 +799,10 @@ const ItemDetails = ({navigation, route}) => {
           remixedItem={item}
         />
       )}
-      {!!transactionHash && (
+      {!!transactionHash || !!transactionHashItem && (
         <SuccessModal
-          clearTransactionHash={clearTransactionHash}
-          transactionHash={transactionHash}></SuccessModal>
+          clearTransactionHash={!!transactionHash ? clearTransactionHash : clearTransactionHashItem}
+          transactionHash={!!transactionHash ? transactionHash: transactionHashItem}></SuccessModal>
       )}
       <PhotoEditorModal
         image={{uri: previewImageURI}}

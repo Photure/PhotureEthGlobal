@@ -1,12 +1,26 @@
-import React, {useState} from 'react';
-import {Modal, Button, FormControl, Stack, Input} from 'native-base';
+import React, {useState, useEffect} from 'react';
+import {Modal, Button, FormControl, Stack, Input, Text} from 'native-base';
+import { Alert } from 'react-native';
 
-export default function SellModal({showModal, setShowModal, onPress}) {
+export default function SellModal({showModal, setShowModal, onPress, getUSDConversion}) {
   const [salePrice, setSalePrice] = useState('');
+  let convertedPrice = ''
   const [errors, setErrors] = React.useState({
     hasError: false,
     message: '',
   });
+
+  useEffect(() => {
+       (async () => {
+        console.log('here88')
+        if(parseFloat(salePrice) > 0 ){
+          console.log('priceInUSD', priceInUSD)
+          const priceInUSD = await getUSDConversion(salePrice)
+          console.log('priceInUSD', priceInUSD)
+          convertedPrice = `$ ${priceInUSD}`
+        }
+      })()
+  },[salePrice])
 
   const validate = () => {
     const decimal = salePrice.substr(salePrice.indexOf('.'));
@@ -35,8 +49,8 @@ export default function SellModal({showModal, setShowModal, onPress}) {
         <Modal.Body>
           <FormControl isRequired isInvalid={'message' in errors}>
             <FormControl.Label>Price in MATIC</FormControl.Label>
-            <Input onChangeText={value => setSalePrice(value)} />
-
+            <Input keyboardType={'numeric'} onChangeText={value => setSalePrice(value)} />
+            <Text>{`Approximately ${convertedPrice}`}</Text>
             <FormControl.ErrorMessage
               _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>
               {errors.message}
@@ -49,7 +63,6 @@ export default function SellModal({showModal, setShowModal, onPress}) {
               variant="ghost"
               colorScheme="blueGray"
               onPress={() => {
-                onPress();
                 setShowModal(false);
               }}>
               Cancel
@@ -57,7 +70,18 @@ export default function SellModal({showModal, setShowModal, onPress}) {
             <Button
               onPress={() => {
                 if (validate()) {
-                  setShowModal(false);
+                  Alert.alert('Are you sure', `This is approximately ${convertedPrice}`, [
+                    {
+                      onPress: () =>setShowModal(false),
+                    text:'cancel'
+                  },
+                  {
+                    onPress: () =>{
+                      onPress(salePrice);
+                      setShowModal(false);},
+                      text:'ok'
+                    }]
+                    )
                 }
               }}>
               List NFT

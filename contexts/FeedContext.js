@@ -196,9 +196,19 @@ export const FeedProvider = (props: {children: React.ReactNode}): any => {
       .fetchMarketItems()
       .call({from: walletConnect.accounts[0]});
     console.log('here goes', marketDataReturn);
+    
+    const transformedMarketData = []
+    marketDataReturn.forEach(item => {
+      transformedMarketData.push({
+        itemId: item[0],
+        tokenId: item[2],
+        sold: item[6],
+        price: item[5]
+      })  
+    });
     dispatchMarket({
       type: MARKET_DATA_TYPES.SET_MARKETPLACE_DATA,
-      payload: marketDataReturn,
+      payload: transformedMarketData,
     });
   };
 

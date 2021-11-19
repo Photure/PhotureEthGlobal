@@ -299,7 +299,7 @@ export const CameraProvider = (props: {children: React.ReactNode}): any => {
           file_type,
           ...dimensions,
           isRemix: !!remixedItem || false, // update later
-          parent: remixedItem?.id || '0', //
+          parent: remixedItem?.id || null, //
           adam: remixedItem?.adam || wc._accounts[0],
           // children: []
         }

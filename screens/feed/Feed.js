@@ -32,7 +32,7 @@ const useLazyRef = initializer => {
 };
 
 export default function FeedScreen({navigation}) {
-  const {feedData = [], marketData} = useFeedContext();
+  const {feedData = [], marketData = []} = useFeedContext();
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
   const [itemToRemix, setItemToRemix] = useState(null);
@@ -182,6 +182,10 @@ export default function FeedScreen({navigation}) {
         file_type,
       } = item.metadata;
 
+      const isItemForSale = marketData.length > 0 && marketData.find(marketItem => marketItem.tokenId === id && !marketItem.sold)
+
+      console.log('isItemForSale',isItemForSale, marketData)
+
       dataForFlatlist.push({
         id,
         title,
@@ -196,6 +200,10 @@ export default function FeedScreen({navigation}) {
         parent,
         adam,
         file_type,
+        isItemForSale: isItemForSale && {
+          ...isItemForSale,
+          priceInMatic: isItemForSale.price*(10**-18)
+        },
       });
     });
     return dataForFlatlist;
