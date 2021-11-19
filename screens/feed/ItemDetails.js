@@ -35,20 +35,34 @@ import {SharedElement} from 'react-navigation-shared-element';
 import ScreenCard from '../../components/Card/ScreenCard';
 
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
-import { ItemProvider, useItemContext, withItemContext } from '../../contexts/ItemContext';
-import { useWalletConnect } from '@walletconnect/react-native-dapp';
-import { CameraContext } from '../../contexts/CameraContext';
-import { configuration } from './data';
+import {
+  ItemProvider,
+  useItemContext,
+  withItemContext,
+} from '../../contexts/ItemContext';
+import {useWalletConnect} from '@walletconnect/react-native-dapp';
+import {CameraContext} from '../../contexts/CameraContext';
+import {configuration} from './data';
 import PhotoFormModal from '../../components/PhotoFormModal';
-import { AlertModal } from '../../components/AlertDialog';
-
+import {AlertModal} from '../../components/AlertDialog';
+import BuyModal from '../../components/BuyModal';
+import SuccessModal from '../../components/SuccessModal';
 
 const ItemDetails = ({navigation, route}) => {
-  const { getParent, getChildren, isLoadingChildren, isLoadingParent, parents, children, handleLikePress} = useItemContext()
+  const {
+    getParent,
+    getChildren,
+    isLoadingChildren,
+    isLoadingParent,
+    parents,
+    children,
+    handleLikePress,
+  } = useItemContext();
   let hasBeenCalled = false;
   const scrollY = useSharedValue(0);
 
   const [showModal, setShowModal] = useState(false);
+  const [showBuyModal, setShowBuyModal] = useState(false);
 
   const [previewImageURI, setPreviewImageURI] = useState(
     'https://via.placeholder.com/150',
@@ -65,38 +79,44 @@ const ItemDetails = ({navigation, route}) => {
   const {item, sharedElementIdSuffix} = route.params;
   const name = route.name;
 
-  const wc = useWalletConnect()
-  
-  const USER_WALLET_ADDRESS = wc._accounts[0];
-  const isYourNFT = USER_WALLET_ADDRESS.toLowerCase() === item.walletAddress.toLowerCase();
+  const wc = useWalletConnect();
 
-  console.log('walletAddress!!', USER_WALLET_ADDRESS, item.walletAddress)
+  const USER_WALLET_ADDRESS = wc._accounts[0];
+  const isYourNFT =
+    USER_WALLET_ADDRESS.toLowerCase() === item.walletAddress.toLowerCase();
+
+  console.log('walletAddress!!', USER_WALLET_ADDRESS, item.walletAddress);
 
   const {width, height} = useWindowDimensions('window');
   const isGestureActive = useSharedValue(false);
 
   const scale = useSharedValue(1);
 
-  console.log('before hasParent', item)
+  console.log('before hasParent', item);
 
   const hasParent = !!item.adam || parents[item.id];
 
-  useEffect(()=> {
-    getParent(1)
-    getChildren([1], item.id)
-}, [item.id])
+  useEffect(() => {
+    getParent(1);
+    getChildren([1], item.id);
+  }, [item.id]);
 
-  const transfromParent = (parent) => {
-    return transformItemData([parent])[0]
-  }
+  const transfromParent = parent => {
+    return transformItemData([parent])[0];
+  };
 
-  const transformItemData = (arrayOfItems) => {
-    const dataForFlatlist = []
-    console.log('arrayOfItems', arrayOfItems)
-    arrayOfItems.forEach((item,index) => {
-
-      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
-      const {image: imageLink, name: title, tag, children = [], likes = [],} = item.metadata
+  const transformItemData = arrayOfItems => {
+    const dataForFlatlist = [];
+    console.log('arrayOfItems', arrayOfItems);
+    arrayOfItems.forEach((item, index) => {
+      const {token_id: id, owner_of: walletAddress = '', price: date} = item;
+      const {
+        image: imageLink,
+        name: title,
+        tag,
+        children = [],
+        likes = [],
+      } = item.metadata;
 
       dataForFlatlist.push({
         id,
@@ -106,11 +126,11 @@ const ItemDetails = ({navigation, route}) => {
         tag: !!tag ? tag : 'Nature',
         imageLink,
         children,
-        likes
-      })
-    })
-    return dataForFlatlist
-  }
+        likes,
+      });
+    });
+    return dataForFlatlist;
+  };
 
   const {
     handleMint,
@@ -265,23 +285,29 @@ const ItemDetails = ({navigation, route}) => {
 
   const [likePressed, setLikePressed] = React.useState(false);
 
-  console.log('parents, children', parents, children)
+  console.log('parents, children', parents, children);
 
-  const getKey = () =>{ 
-    let key = 0
+  const getKey = () => {
+    let key = 0;
     Object.keys(parents).forEach(i => {
-      console.log('foreach', i, item.id)
-      key = i === item.id && i.toString()
-    })
-    return key
-  }
-  const transformedParent = (getKey() !== 0 && parents[getKey()]) ? transfromParent(parents[getKey()]) : null
-  
-  const transformedChildren = (getKey() !== 0 && children[getKey()]) ? transformItemData(children[getKey()]) : null
+      console.log('foreach', i, item.id);
+      key = i === item.id && i.toString();
+    });
+    return key;
+  };
+  const transformedParent =
+    getKey() !== 0 && parents[getKey()]
+      ? transfromParent(parents[getKey()])
+      : null;
 
-  console.log('with key', getKey(), parents[getKey()], children[getKey()])
-  console.log('transformed', transformedChildren, transformedParent)
+  const transformedChildren =
+    getKey() !== 0 && children[getKey()]
+      ? transformItemData(children[getKey()])
+      : null;
 
+  console.log('with key', getKey(), parents[getKey()], children[getKey()]);
+  console.log('transformed', transformedChildren, transformedParent);
+  console.log('*****************', item.id);
   return (
     <Box
       flex={1}
@@ -307,7 +333,8 @@ const ItemDetails = ({navigation, route}) => {
               showsVerticalScrollIndicator={false}
               onScrollBeginDrag={this.onRegisterLastScroll}
               scrollEventThrottle={1}>
-              <SharedElement id={`item.${item.id}.photo.${sharedElementIdSuffix}`}>
+              <SharedElement
+                id={`item.${item.id}.photo.${sharedElementIdSuffix}`}>
                 <Image
                   source={{
                     uri: item.imageLink,
@@ -328,7 +355,8 @@ const ItemDetails = ({navigation, route}) => {
                 _dark={{
                   bg: 'gray.800',
                 }}>
-                <SharedElement id={`item.${item.id}.card.${sharedElementIdSuffix}`}>
+                <SharedElement
+                  id={`item.${item.id}.card.${sharedElementIdSuffix}`}>
                   <Stack
                     p={4}
                     mx={6}
@@ -345,7 +373,8 @@ const ItemDetails = ({navigation, route}) => {
                     <Stack space={1} shadow={2}>
                       {!isYourNFT && (
                         <HStack space={1} size="sm" alignItems="center">
-                          <SharedElement id={`item.${item.id}.avatar.${sharedElementIdSuffix}`}>
+                          <SharedElement
+                            id={`item.${item.id}.avatar.${sharedElementIdSuffix}`}>
                             <Avatar
                               size="sm"
                               source={require('../../avatar.png')}
@@ -360,7 +389,13 @@ const ItemDetails = ({navigation, route}) => {
                             _dark={{
                               c: 'gray.700',
                             }}>
-                            {`${item.walletAddress.substring(0,4)}...${item.walletAddress.substring(item.walletAddress.length-4,item.walletAddress.length)}`}
+                            {`${item.walletAddress.substring(
+                              0,
+                              4,
+                            )}...${item.walletAddress.substring(
+                              item.walletAddress.length - 4,
+                              item.walletAddress.length,
+                            )}`}
                           </Text>
                         </HStack>
                       )}
@@ -388,7 +423,8 @@ const ItemDetails = ({navigation, route}) => {
                   </Stack>
                 </SharedElement>
                 <HStack mx={6} alignItems="center">
-                  <SharedElement id={`item.${item.id}.tag.${sharedElementIdSuffix}`}>
+                  <SharedElement
+                    id={`item.${item.id}.tag.${sharedElementIdSuffix}`}>
                     <Stack
                       p={1}
                       mr={2}
@@ -413,7 +449,8 @@ const ItemDetails = ({navigation, route}) => {
                       </Badge>
                     </Stack>
                   </SharedElement>
-                  <SharedElement id={`item.${item.id}.edit.${sharedElementIdSuffix}`}>
+                  <SharedElement
+                    id={`item.${item.id}.edit.${sharedElementIdSuffix}`}>
                     <Pressable
                       onPress={() => {
                         setShowPreview(true);
@@ -450,7 +487,8 @@ const ItemDetails = ({navigation, route}) => {
                       </Stack>
                     </Pressable>
                   </SharedElement>
-                  <SharedElement id={`item.${item.id}.like.${sharedElementIdSuffix}`}>
+                  <SharedElement
+                    id={`item.${item.id}.like.${sharedElementIdSuffix}`}>
                     <Pressable
                       onPress={() => {
                         if (item.type === 'edit') {
@@ -458,10 +496,10 @@ const ItemDetails = ({navigation, route}) => {
                         } else {
                           if (likePressed) {
                             setLikePressed(false);
-                            handleLikePress(item)
+                            handleLikePress(item);
                           } else {
                             setLikePressed(true);
-                            handleLikePress(item)
+                            handleLikePress(item);
                           }
                         }
                       }}>
@@ -502,27 +540,31 @@ const ItemDetails = ({navigation, route}) => {
                     </Pressable>
                   </SharedElement>
                 </HStack>
-                {isYourNFT ? <Button
-                  onPress={() => console.log('hello world')}
-                  mx={6}
-                  my={4}
-                  borderRadius={10}
-                  colorScheme={twohundred().substr(
-                    0,
-                    twohundred().indexOf('.'),
-                  )}>
-                  Sell
-                </Button> : <Button
-                  onPress={() => console.log('hello world')}
-                  mx={6}
-                  my={4}
-                  borderRadius={10}
-                  colorScheme={twohundred().substr(
-                    0,
-                    twohundred().indexOf('.'),
-                  )}>
-                  BUY
-                </Button>}
+                {isYourNFT ? (
+                  <Button
+                    onPress={() => console.log('hello world')}
+                    mx={6}
+                    my={4}
+                    borderRadius={10}
+                    colorScheme={twohundred().substr(
+                      0,
+                      twohundred().indexOf('.'),
+                    )}>
+                    Sell
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => setShowBuyModal(true)}
+                    mx={6}
+                    my={4}
+                    borderRadius={10}
+                    colorScheme={twohundred().substr(
+                      0,
+                      twohundred().indexOf('.'),
+                    )}>
+                    BUY
+                  </Button>
+                )}
                 <Heading
                   size="lg"
                   textAlign={'center'}
@@ -558,7 +600,7 @@ const ItemDetails = ({navigation, route}) => {
                           if (route.name === 'ItemDetailsOne') {
                             navigation.push('ItemDetails', {
                               item: {
-                                ...transformedParent
+                                ...transformedParent,
                                 // id: '100',
                                 // title: 'River Trip',
                                 // walletAddress: '0xccf3...7cC4',
@@ -571,7 +613,7 @@ const ItemDetails = ({navigation, route}) => {
                           } else {
                             navigation.push('ItemDetailsOne', {
                               item: {
-                                ...transformedParent
+                                ...transformedParent,
                                 // id: '100',
                                 // title: 'River Trip',
                                 // walletAddress: '0xccf3...7cC4',
@@ -586,7 +628,7 @@ const ItemDetails = ({navigation, route}) => {
                           if (route.name === 'ProfileItems') {
                             navigation.push('ProfileItems', {
                               item: {
-                                ...transformedParent
+                                ...transformedParent,
                                 // id: '100',
                                 // title: 'River Trip',
                                 // walletAddress: '0xccf3...7cC4',
@@ -599,7 +641,7 @@ const ItemDetails = ({navigation, route}) => {
                           } else {
                             navigation.push('ProfileItemsOne', {
                               item: {
-                                ...transformedParent
+                                ...transformedParent,
                                 // id: '100',
                                 // title: 'River Trip',
                                 // walletAddress: '0xccf3...7cC4',
@@ -620,83 +662,82 @@ const ItemDetails = ({navigation, route}) => {
                     Inspired
                   </Heading>
                 </Stack>
-                {transformedChildren && 
-                <Carousel
-                  data={transformedChildren}
-                  useExperimentalSnap
-                  firstItem={1}
-                  renderItem={({item: ListItem, index, dataIndex}) => (
-                    <ProfileCard
-                      {...ListItem}
-                      sharedElementIdSuffix={'carousel'}
-                      index={dataIndex}
-                      containerWidth={width / 2}
-                      isFromDetails
-                      onPress={() => {
-                        if (name.includes('ItemDetails')) {
-                          if (route.name === 'ItemDetailsOne') {
-                            navigation.push('ItemDetails', {
-                              item: {
-                                ...item
-                                // id: '100',
-                                // title: 'River Trip',
-                                // walletAddress: '0xccf3...7cC4',
-                                // date: '0.4 MATIC',
-                                // tag: 'Water',
-                                // imageLink:
-                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                              },
-                            });
+                {transformedChildren && (
+                  <Carousel
+                    data={transformedChildren}
+                    useExperimentalSnap
+                    firstItem={1}
+                    renderItem={({item: ListItem, index, dataIndex}) => (
+                      <ProfileCard
+                        {...ListItem}
+                        index={dataIndex}
+                        containerWidth={width / 2}
+                        isFromDetails
+                        onPress={() => {
+                          if (name.includes('ItemDetails')) {
+                            if (route.name === 'ItemDetailsOne') {
+                              navigation.push('ItemDetails', {
+                                item: {
+                                  ...item,
+                                  // id: '100',
+                                  // title: 'River Trip',
+                                  // walletAddress: '0xccf3...7cC4',
+                                  // date: '0.4 MATIC',
+                                  // tag: 'Water',
+                                  // imageLink:
+                                  //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                },
+                              });
+                            } else {
+                              navigation.push('ItemDetailsOne', {
+                                item: {
+                                  ...item,
+                                  // id: '100',
+                                  // title: 'River Trip',
+                                  // walletAddress: '0xccf3...7cC4',
+                                  // date: '0.4 MATIC',
+                                  // tag: 'Water',
+                                  // imageLink:
+                                  //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                },
+                              });
+                            }
                           } else {
-                            navigation.push('ItemDetailsOne', {
-                              item: {
-                                ...item
-                                // id: '100',
-                                // title: 'River Trip',
-                                // walletAddress: '0xccf3...7cC4',
-                                // date: '0.4 MATIC',
-                                // tag: 'Water',
-                                // imageLink:
-                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                              },
-                            });
+                            if (route.name === 'ProfileItems') {
+                              navigation.push('ProfileItems', {
+                                item: {
+                                  ...item,
+                                  // id: '100',
+                                  // title: 'River Trip',
+                                  // walletAddress: '0xccf3...7cC4',
+                                  // date: '0.4 MATIC',
+                                  // tag: 'Water',
+                                  // imageLink:
+                                  //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                },
+                              });
+                            } else {
+                              navigation.push('ProfileItemsOne', {
+                                item: {
+                                  ...item,
+                                  // id: '100',
+                                  // title: 'River Trip',
+                                  // walletAddress: '0xccf3...7cC4',
+                                  // date: '0.4 MATIC',
+                                  // tag: 'Water',
+                                  // imageLink:
+                                  //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
+                                },
+                              });
+                            }
                           }
-                        } else {
-                          if (route.name === 'ProfileItems') {
-                            navigation.push('ProfileItems', {
-                              item: {
-                                ...item
-                                // id: '100',
-                                // title: 'River Trip',
-                                // walletAddress: '0xccf3...7cC4',
-                                // date: '0.4 MATIC',
-                                // tag: 'Water',
-                                // imageLink:
-                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                              },
-                            });
-                          } else {
-                            navigation.push('ProfileItemsOne', {
-                              item: {
-                                ...item
-                                // id: '100',
-                                // title: 'River Trip',
-                                // walletAddress: '0xccf3...7cC4',
-                                // date: '0.4 MATIC',
-                                // tag: 'Water',
-                                // imageLink:
-                                //   'https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/virginia/BR1607_1_c618f8d9-a7bd-407d-8934-1307566c930d.jpg',
-                              },
-                            });
-                          }
-                        }
-                      }}
-                    />
-                  )}
-                  sliderWidth={width - 16}
-                  itemWidth={width / 2}
-                />
-              }
+                        }}
+                      />
+                    )}
+                    sliderWidth={width - 16}
+                    itemWidth={width / 2}
+                  />
+                )}
 
                 <Box my={10} />
               </VStack>
@@ -704,15 +745,36 @@ const ItemDetails = ({navigation, route}) => {
           </NativeViewGestureHandler>
         </Animated.View>
       </PanGestureHandler>
-      {showModal && <PhotoFormModal
-        setFormValues={setFormValues}
-        handleMint={handleMint}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        filePath={previewImageURI}
-        formValues={formValues}
-        remixedItem={item}
-      />}
+      {showBuyModal && (
+        <BuyModal
+          showModal={showBuyModal}
+          setShowModal={setShowBuyModal}
+          price={0.01}
+          onPress={() => console.log('test')}
+        />
+      )}
+      {showModal && (
+        <PhotoFormModal
+          setFormValues={setFormValues}
+          handleMint={handleMint}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          filePath={previewImageURI}
+          formValues={formValues}
+          remixedItem={item}
+        />
+      )}
+      {showModal && (
+        <PhotoFormModal
+          setFormValues={setFormValues}
+          handleMint={handleMint}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          filePath={previewImageURI}
+          formValues={formValues}
+          remixedItem={item}
+        />
+      )}
       {errorCode !== null && errorCode >= 0 && (
         <AlertModal
           errorCode={errorCode}
@@ -747,4 +809,4 @@ const ItemDetails = ({navigation, route}) => {
     </Box>
   );
 };
-export default withItemContext(ItemDetails) ;
+export default withItemContext(ItemDetails);

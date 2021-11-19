@@ -32,10 +32,10 @@ const useLazyRef = initializer => {
 };
 
 export default function FeedScreen({navigation}) {
-  const {feedData =[], marketData} = useFeedContext();
+  const {feedData = [], marketData} = useFeedContext();
   const {colorMode} = useColorMode();
   const {colors} = useTheme();
-  const [itemToRemix, setItemToRemix] = useState(null)
+  const [itemToRemix, setItemToRemix] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -90,7 +90,10 @@ export default function FeedScreen({navigation}) {
   );
   useEffect(() => {
     console.log(wc);
-    if ((!wc.connected && wc?.connect) || (!wc?.session?.connected && wc?.connect) ) {
+    if (
+      (!wc.connected && wc?.connect) ||
+      (!wc?.session?.connected && wc?.connect)
+    ) {
       wc.connect({
         chainId: 137,
       });
@@ -160,13 +163,24 @@ export default function FeedScreen({navigation}) {
   console.log('remixedItem', itemToRemix);
 
   const transformFeedData = () => {
-    console.log('feedDataInTransform', feedData)
-    const dataForFlatlist = []
-    feedData.forEach((item,index) => {
-      console.log('need to grab everything off Item', item.metadata)
-      
-      const { token_id: id, owner_of: walletAddress = '', price: date  } = item
-      const {image: imageLink = 'https://via.placeholder.com/150', name: title, tag, children = [], likes = [], description, timestamp, parent, adam, file_type} = item.metadata
+    console.log('feedDataInTransform', feedData);
+    const dataForFlatlist = [];
+    feedData.forEach((item, index) => {
+      console.log('need to grab everything off Item', item.metadata);
+
+      const {token_id: id, owner_of: walletAddress = '', price: date} = item;
+      const {
+        image: imageLink = 'https://via.placeholder.com/150',
+        name: title,
+        tag,
+        children = [],
+        likes = [],
+        description,
+        timestamp,
+        parent,
+        adam,
+        file_type,
+      } = item.metadata;
 
       dataForFlatlist.push({
         id,
@@ -181,11 +195,13 @@ export default function FeedScreen({navigation}) {
         timestamp,
         parent,
         adam,
-        file_type
-      })
-    })
-    return dataForFlatlist
-  }
+        file_type,
+      });
+    });
+    return dataForFlatlist;
+  };
+
+  console.log('feedDataInTransform', feedData);
 
   return (
     <SafeAreaView
@@ -269,6 +285,7 @@ export default function FeedScreen({navigation}) {
                   sharedElementIdSuffix={'one'}
                   index={index}
                   onPress={() => {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$', item.id);
                     navigation.push('ItemDetails', {
                       item,
                       sharedElementIdSuffix: 'one'
@@ -276,8 +293,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
-                    console.log('onEditPress', item)
-                    setItemToRemix(item)
+                    console.log('onEditPress', item);
+                    setItemToRemix(item);
                     setShowPreview(true);
                     console.log(feedData[index].metadata.image);
                     setPreviewImageURI(feedData[index].metadata.image);
@@ -320,6 +337,7 @@ export default function FeedScreen({navigation}) {
                   y={yTwo}
                   index={index}
                   onPress={() => {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$', item.id);
                     navigation.push('ItemDetails', {
                       item,
                       sharedElementIdSuffix: 'two'
@@ -327,8 +345,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
-                    console.log('onEditPress', item)
-                    setItemToRemix(item)
+                    console.log('onEditPress', item);
+                    setItemToRemix(item);
                     setShowPreview(true);
                     setPreviewImageURI(feedData[index].metadata.image);
                   }}
@@ -377,8 +395,8 @@ export default function FeedScreen({navigation}) {
                     StatusBar.setHidden(true, 'slide');
                   }}
                   onEditPress={() => {
-                    console.log('onEditPress', item)
-                    setItemToRemix(item)
+                    console.log('onEditPress', item);
+                    setItemToRemix(item);
                     setShowPreview(true);
                     setPreviewImageURI(feedData[index].metadata.image);
                   }}
@@ -422,20 +440,22 @@ export default function FeedScreen({navigation}) {
           clearTransactionHash={clearTransactionHash}
           transactionHash={transactionHash}></SuccessModal>
       )}
-      {<PhotoEditorModal
-        image={{uri: previewImageURI}}
-        onExport={photoEditorResult => {
-          console.log(previewImageURI);
-          //setShowPreview(false);
-          setShowModal(true);
-          setPreviewImageURI(photoEditorResult.image);
-        }}
-        onCancel={() => {
-          setShowPreview(false);
-        }}
-        visible={showPreview}
-        configuration={configuration}
-      />}
+      {
+        <PhotoEditorModal
+          image={{uri: previewImageURI}}
+          onExport={photoEditorResult => {
+            console.log(previewImageURI);
+            //setShowPreview(false);
+            setShowModal(true);
+            setPreviewImageURI(photoEditorResult.image);
+          }}
+          onCancel={() => {
+            setShowPreview(false);
+          }}
+          visible={showPreview}
+          configuration={configuration}
+        />
+      }
     </SafeAreaView>
   );
 }
